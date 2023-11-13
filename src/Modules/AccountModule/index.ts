@@ -3,10 +3,12 @@ import { ApiResponse } from '../../SupPayClient.type';
 import {
   RecoveryValidationData,
   RecoveryVerifyData,
+  UserContextData,
 } from './AccountModule.type';
 
 export type RecoveryVerifyResponse = ApiResponse<RecoveryVerifyData>;
 export type RecoveryValidationResponse = ApiResponse<RecoveryValidationData>;
+export type UserContextResponse = ApiResponse<UserContextData>;
 
 export class AccountModule {
   private http: Http;
@@ -47,6 +49,13 @@ export class AccountModule {
         password_confirmation: passwordConfirmation,
       },
     );
+    return response.data;
+  }
+
+  async context(): Promise<UserContextResponse> {
+    const response = await this.http
+      .auth(true)
+      .get<UserContextResponse>('/api/v3/user/profile');
     return response.data;
   }
 }

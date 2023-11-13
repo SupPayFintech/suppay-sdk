@@ -5,6 +5,7 @@ import { createMockAxiosResponse } from '../../jest-helper';
 import { recoveryVerifyData } from './fixtures/response-recovery-verify';
 import { recoveryValidateData } from './fixtures/response-recovery-validate';
 import { ApiResponseEmpty } from '../fixtures/response-api-empty';
+import { userContextData } from './fixtures/response-user-context';
 
 jest.mock('../../Http');
 
@@ -77,5 +78,21 @@ describe('AccountModule', () => {
     );
 
     expect(result).toEqual(ApiResponseEmpty);
+  });
+
+  it('Should call the verify recovery endpoint with authentication', async () => {
+    const mockResponse = createMockAxiosResponse(userContextData);
+
+    httpMock.auth.mockImplementation(() => httpMock);
+
+    httpMock.get.mockResolvedValue(mockResponse);
+
+    const result = await authModule.context();
+
+    expect(httpMock.auth).toHaveBeenCalledWith(true);
+
+    expect(httpMock.get).toHaveBeenCalledWith('/api/v3/user/profile');
+
+    expect(result).toEqual(userContextData);
   });
 });
