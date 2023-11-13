@@ -44,9 +44,13 @@ describe('PaymentModule', () => {
 
     const mockResponse = createMockAxiosResponse(paymentCreateData);
 
+    httpMock.auth.mockImplementation(() => httpMock);
+
     httpMock.post.mockResolvedValue(mockResponse);
 
     const result = await authModule.create(body);
+
+    expect(httpMock.auth).toHaveBeenCalledWith(true);
 
     expect(httpMock.post).toHaveBeenCalledWith('/api/v3/payment/create', body);
 
@@ -61,9 +65,13 @@ describe('PaymentModule', () => {
 
     const mockResponse = createMockAxiosResponse(paymentAllData);
 
+    httpMock.auth.mockImplementation(() => httpMock);
+
     httpMock.get.mockResolvedValue(mockResponse);
 
     const result = await authModule.all(search, page, orderBy, perPage);
+
+    expect(httpMock.auth).toHaveBeenCalledWith(true);
 
     expect(httpMock.get).toHaveBeenCalledWith(
       `/api/v3/payment/all?search=${search}&page=${page}&orderBy=${orderBy}&perPage=${perPage}`,
@@ -80,9 +88,13 @@ describe('PaymentModule', () => {
 
     const mockResponse = createMockAxiosResponse(paymentParticipantData);
 
+    httpMock.auth.mockImplementation(() => httpMock);
+
     httpMock.post.mockResolvedValue(mockResponse);
 
     const result = await authModule.participant(body);
+
+    expect(httpMock.auth).toHaveBeenCalledWith(true);
 
     expect(httpMock.post).toHaveBeenCalledWith(
       '/api/v3/payment/participant',
@@ -97,9 +109,13 @@ describe('PaymentModule', () => {
 
     const mockResponse = createMockAxiosResponse(ApiResponseEmpty);
 
+    httpMock.auth.mockImplementation(() => httpMock);
+
     httpMock.get.mockResolvedValue(mockResponse);
 
     const result = await authModule.renotifyAuthorization(id);
+
+    expect(httpMock.auth).toHaveBeenCalledWith(true);
 
     expect(httpMock.get).toHaveBeenCalledWith(
       `/api/v3/payment/${id}/authorization/notify`,
@@ -114,9 +130,13 @@ describe('PaymentModule', () => {
 
     const mockResponse = createMockAxiosResponse(ApiResponseEmpty);
 
+    httpMock.auth.mockImplementation(() => httpMock);
+
     httpMock.post.mockResolvedValue(mockResponse);
 
     const result = await authModule.authorizeWithCode(id, code);
+
+    expect(httpMock.auth).toHaveBeenCalledWith(true);
 
     expect(httpMock.post).toHaveBeenCalledWith(
       `/api/v3/payment/${id}/authorization/execute/with-code`,
@@ -132,9 +152,13 @@ describe('PaymentModule', () => {
 
     const mockResponse = createMockAxiosResponse(ApiResponseEmpty);
 
+    httpMock.auth.mockImplementation(() => httpMock);
+
     httpMock.post.mockResolvedValue(mockResponse);
 
     const result = await authModule.changeValue(id, value);
+
+    expect(httpMock.auth).toHaveBeenCalledWith(true);
 
     expect(httpMock.post).toHaveBeenCalledWith(
       `/api/v3/payment/${id}/update/value`,
@@ -150,9 +174,13 @@ describe('PaymentModule', () => {
 
     const mockResponse = createMockAxiosResponse(ApiResponseEmpty);
 
+    httpMock.auth.mockImplementation(() => httpMock);
+
     httpMock.post.mockResolvedValue(mockResponse);
 
     const result = await authModule.cancel(id, reason);
+
+    expect(httpMock.auth).toHaveBeenCalledWith(true);
 
     expect(httpMock.post).toHaveBeenCalledWith(`/api/v3/payment/${id}/cancel`, {
       reason,
@@ -178,9 +206,13 @@ describe('PaymentModule', () => {
 
     const mockResponse = createMockAxiosResponse(paymentSimulateData);
 
+    httpMock.auth.mockImplementation(() => httpMock);
+
     httpMock.post.mockResolvedValue(mockResponse);
 
     const result = await authModule.simulate(body);
+
+    expect(httpMock.auth).toHaveBeenCalledWith(true);
 
     expect(httpMock.post).toHaveBeenCalledWith(
       `/api/v3/payment/simulate`,
@@ -195,9 +227,13 @@ describe('PaymentModule', () => {
 
     const mockResponse = createMockAxiosResponse(paymentCreateData);
 
+    httpMock.auth.mockImplementation(() => httpMock);
+
     httpMock.post.mockResolvedValue(mockResponse);
 
     const result = await authModule.authorizeByCode(code);
+
+    expect(httpMock.auth).toHaveBeenCalledWith(true);
 
     expect(httpMock.post).toHaveBeenCalledWith(
       `/api/v3/authorization/execute/with-code`,
@@ -217,6 +253,8 @@ describe('PaymentModule', () => {
 
     const mockResponse = createMockAxiosResponse(paymentCreateData);
 
+    httpMock.auth.mockImplementation(() => httpMock);
+
     httpMock.post.mockResolvedValue(mockResponse);
 
     const result = await authModule.attachProof(id, type, value, amount);
@@ -224,6 +262,8 @@ describe('PaymentModule', () => {
     const formData = new FormData();
     formData.append('type', type);
     formData.append('key', value);
+
+    expect(httpMock.auth).toHaveBeenCalledWith(true);
 
     expect(httpMock.post).toHaveBeenCalledWith(
       `/api/v3/payment/${id}/proof/attach`,
@@ -263,6 +303,8 @@ describe('PaymentModule', () => {
     const mockResponse = createMockAxiosResponse(paymentCreateData);
     httpMock.post.mockResolvedValue(mockResponse);
 
+    httpMock.auth.mockImplementation(() => httpMock);
+
     const result = await authModule.attachProof(
       id,
       type,
@@ -275,6 +317,8 @@ describe('PaymentModule', () => {
     formData.append('type', type);
     formData.append('file', fileValue);
     formData.append('value', amount.toString());
+
+    expect(httpMock.auth).toHaveBeenCalledWith(true);
 
     expect(httpMock.post).toHaveBeenCalledWith(
       `/api/v3/payment/${id}/proof/attach`,

@@ -35,10 +35,9 @@ export class PaymentModule {
   }
 
   async create(body: PaymentCreate): Promise<PaymentCreateResponse> {
-    const response = await this.http.post<PaymentCreateResponse>(
-      `/api/v3/payment/create`,
-      body,
-    );
+    const response = await this.http
+      .auth(true)
+      .post<PaymentCreateResponse>(`/api/v3/payment/create`, body);
 
     return response.data;
   }
@@ -51,9 +50,9 @@ export class PaymentModule {
   ): Promise<PaymentAllResponse> {
     const query = createQueryString({ search, page, orderBy, perPage });
 
-    const response = await this.http.get<PaymentAllResponse>(
-      `/api/v3/payment/all?${query}`,
-    );
+    const response = await this.http
+      .auth(true)
+      .get<PaymentAllResponse>(`/api/v3/payment/all?${query}`);
 
     return response.data;
   }
@@ -61,10 +60,9 @@ export class PaymentModule {
   async participant(
     body: PaymentParticipant,
   ): Promise<PaymentParticipantResponse> {
-    const response = await this.http.post<PaymentParticipantResponse>(
-      `/api/v3/payment/participant`,
-      body,
-    );
+    const response = await this.http
+      .auth(true)
+      .post<PaymentParticipantResponse>(`/api/v3/payment/participant`, body);
 
     return response.data;
   }
@@ -72,9 +70,11 @@ export class PaymentModule {
   async renotifyAuthorization(
     id: string,
   ): Promise<PaymentRenotifyAuthorizationResponse> {
-    const response = await this.http.get<PaymentRenotifyAuthorizationResponse>(
-      `/api/v3/payment/${id}/authorization/notify`,
-    );
+    const response = await this.http
+      .auth(true)
+      .get<PaymentRenotifyAuthorizationResponse>(
+        `/api/v3/payment/${id}/authorization/notify`,
+      );
 
     return response.data;
   }
@@ -83,12 +83,14 @@ export class PaymentModule {
     id: string,
     code: string,
   ): Promise<PaymentAuthorizeWithCodeResponse> {
-    const response = await this.http.post<PaymentAuthorizeWithCodeResponse>(
-      `/api/v3/payment/${id}/authorization/execute/with-code`,
-      {
-        code,
-      },
-    );
+    const response = await this.http
+      .auth(true)
+      .post<PaymentAuthorizeWithCodeResponse>(
+        `/api/v3/payment/${id}/authorization/execute/with-code`,
+        {
+          code,
+        },
+      );
 
     return response.data;
   }
@@ -97,23 +99,21 @@ export class PaymentModule {
     id: string,
     value: number,
   ): Promise<PaymentChangeValueResponse> {
-    const response = await this.http.post<PaymentChangeValueResponse>(
-      `/api/v3/payment/${id}/update/value`,
-      {
+    const response = await this.http
+      .auth(true)
+      .post<PaymentChangeValueResponse>(`/api/v3/payment/${id}/update/value`, {
         value,
-      },
-    );
+      });
 
     return response.data;
   }
 
   async cancel(id: string, reason: string): Promise<PaymentCancelResponse> {
-    const response = await this.http.post<PaymentCancelResponse>(
-      `/api/v3/payment/${id}/cancel`,
-      {
+    const response = await this.http
+      .auth(true)
+      .post<PaymentCancelResponse>(`/api/v3/payment/${id}/cancel`, {
         reason,
-      },
-    );
+      });
 
     return response.data;
   }
@@ -121,19 +121,20 @@ export class PaymentModule {
   async simulate(
     body: PaymentCreateSimulate,
   ): Promise<PaymentSimulateResponse> {
-    const response = await this.http.post<PaymentSimulateResponse>(
-      `/api/v3/payment/simulate`,
-      body,
-    );
+    const response = await this.http
+      .auth(true)
+      .post<PaymentSimulateResponse>(`/api/v3/payment/simulate`, body);
 
     return response.data;
   }
 
   async authorizeByCode(code: string): Promise<PaymentAuthorizeByCodeResponse> {
-    const response = await this.http.post<PaymentAuthorizeByCodeResponse>(
-      `/api/v3/authorization/execute/with-code`,
-      { code },
-    );
+    const response = await this.http
+      .auth(true)
+      .post<PaymentAuthorizeByCodeResponse>(
+        `/api/v3/authorization/execute/with-code`,
+        { code },
+      );
 
     return response.data;
   }
@@ -165,11 +166,13 @@ export class PaymentModule {
       formData.append('key', value);
     }
 
-    const response = await this.http.post<PaymentAttachProofResponse>(
-      `/api/v3/payment/${id}/proof/attach`,
-      formData,
-      headers,
-    );
+    const response = await this.http
+      .auth(true)
+      .post<PaymentAttachProofResponse>(
+        `/api/v3/payment/${id}/proof/attach`,
+        formData,
+        headers,
+      );
 
     return response.data;
   }
