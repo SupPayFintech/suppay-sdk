@@ -20,9 +20,9 @@ describe("SupplierModule", () => {
 
   it("Should return the available suppliers", async () => {
     const search = "example";
-    const page = 1;
-    const orderBy = OrderBy.DESC;
-    const perPage = 15;
+    const page = 2;
+    const orderBy = OrderBy.ASC;
+    const perPage = 20;
 
     const mockResponse = createMockAxiosResponse(avaliableData);
 

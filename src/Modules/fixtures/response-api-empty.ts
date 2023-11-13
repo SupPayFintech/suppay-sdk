@@ -1,4 +1,4 @@
-export const recoveryResetData = {
+export const ApiResponseEmpty = {
   success: true,
   message: "Sucesso",
 };

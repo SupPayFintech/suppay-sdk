@@ -4,7 +4,7 @@ import { createMockAxiosResponse } from "../../jest-helper";
 
 import { recoveryVerifyData } from "./fixtures/response-recovery-verify";
 import { recoveryValidateData } from "./fixtures/response-recovery-validate";
-import { recoveryResetData } from "./fixtures/response-recovery-reset";
+import { ApiResponseEmpty } from "../fixtures/response-api-empty";
 
 jest.mock("../../Http");
 
@@ -58,7 +58,7 @@ describe("AccountModule", () => {
     const password = "example-1234";
     const passwordConfirmation = "example-1234";
 
-    const mockResponse = createMockAxiosResponse(recoveryResetData);
+    const mockResponse = createMockAxiosResponse(ApiResponseEmpty);
     httpMock.post.mockResolvedValue(mockResponse);
 
     const result = await authModule.resetPassword(
@@ -76,6 +76,6 @@ describe("AccountModule", () => {
       }
     );
 
-    expect(result).toEqual(recoveryResetData);
+    expect(result).toEqual(ApiResponseEmpty);
   });
 });
