@@ -23,14 +23,17 @@ describe('AuthenticationModule', () => {
 
     const result = await authenticationModule.login(username, password);
 
-    expect(httpMock.post).toHaveBeenCalledWith('/api/v3/tokens/create', {
-      username,
-      password,
-    });
-
-    expect(httpMock.setToken).toHaveBeenCalledWith(
-      loginResponseData.data.token,
-    );
+    expect(httpMock.post).toHaveBeenCalledWith(
+      '/api/v3/tokens/create',
+      {
+        username,
+        password,
+      },
+      { signal: undefined },
+    ),
+      expect(httpMock.setToken).toHaveBeenCalledWith(
+        loginResponseData.data.token,
+      );
 
     expect(result).toEqual(loginResponseData);
   });

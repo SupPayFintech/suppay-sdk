@@ -30,12 +30,13 @@ describe('AccountModule', () => {
       {
         document: '123456789',
       },
+      { signal: undefined },
     );
 
     expect(result).toEqual(recoveryVerifyData);
   });
 
-  it('Should call the verify recovery enpoint', async () => {
+  it('Should call the validate recovery enpoint', async () => {
     const code = '701792';
     const document = '123456789';
     const mockResponse = createMockAxiosResponse(recoveryValidateData);
@@ -49,6 +50,7 @@ describe('AccountModule', () => {
         code: '701792',
         document: '123456789',
       },
+      { signal: undefined },
     );
 
     expect(result).toEqual(recoveryValidateData);
@@ -75,6 +77,7 @@ describe('AccountModule', () => {
         password: 'example-1234',
         password_confirmation: 'example-1234',
       },
+      { signal: undefined },
     );
 
     expect(result).toEqual(ApiResponseEmpty);
@@ -91,7 +94,9 @@ describe('AccountModule', () => {
 
     expect(httpMock.auth).toHaveBeenCalledWith(true);
 
-    expect(httpMock.get).toHaveBeenCalledWith('/api/v3/user/profile');
+    expect(httpMock.get).toHaveBeenCalledWith('/api/v3/user/profile', {
+      signal: undefined,
+    });
 
     expect(result).toEqual(userContextData);
   });

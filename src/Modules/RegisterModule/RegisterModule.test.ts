@@ -34,6 +34,9 @@ describe('RegisterModule', () => {
 
     expect(httpMock.get).toHaveBeenCalledWith(
       `/api/v3/register/verification/document/verify/${document}`,
+      {
+        signal: undefined,
+      },
     );
 
     expect(result).toEqual(documentAvaliableData);
@@ -50,6 +53,9 @@ describe('RegisterModule', () => {
 
     expect(httpMock.get).toHaveBeenCalledWith(
       `/api/v3/register/verification/phone/send/${phone}`,
+      {
+        signal: undefined,
+      },
     );
 
     expect(result).toEqual(ApiResponseEmpty);
@@ -67,6 +73,9 @@ describe('RegisterModule', () => {
 
     expect(httpMock.get).toHaveBeenCalledWith(
       `/api/v3/register/verification/phone/verify/${phone}/${code}`,
+      {
+        signal: undefined,
+      },
     );
 
     expect(result).toEqual(attachPictureData);
@@ -92,7 +101,7 @@ describe('RegisterModule', () => {
     expect(httpMock.post).toHaveBeenCalledWith(
       `/api/v3/register/verification/files/attach`,
       formData,
-      { headers: { 'Content-Type': 'multipart/form-data' } },
+      { signal: undefined, headers: { 'Content-Type': 'multipart/form-data' } },
     );
 
     expect(result).toEqual(attachPictureData);
@@ -120,6 +129,9 @@ describe('RegisterModule', () => {
     expect(httpMock.post).toHaveBeenCalledWith(
       '/api/v3/register/commercial-establishment',
       body,
+      {
+        signal: undefined,
+      },
     );
 
     expect(result).toEqual(ApiResponseEmpty);
@@ -140,6 +152,9 @@ describe('RegisterModule', () => {
 
     expect(httpMock.get).toHaveBeenCalledWith(
       `/api/v3/register/all?search=${search}&page=${page}&orderBy=${orderBy}&perPage=${perPage}`,
+      {
+        signal: undefined,
+      },
     );
     expect(httpMock.auth).toHaveBeenCalledWith(true);
 
@@ -156,8 +171,11 @@ describe('RegisterModule', () => {
 
     const result = await registerModule.resume(id);
 
-    expect(httpMock.get).toHaveBeenCalledWith(`/api/v3/register/${id}/resume`);
     expect(httpMock.auth).toHaveBeenCalledWith(true);
+
+    expect(httpMock.get).toHaveBeenCalledWith(`/api/v3/register/${id}/resume`, {
+      signal: undefined,
+    });
 
     expect(result).toEqual(registerAllData);
   });
@@ -188,6 +206,9 @@ describe('RegisterModule', () => {
     expect(httpMock.post).toHaveBeenCalledWith(
       `/api/v3/register/commercial-establishment/${id}/approve`,
       body,
+      {
+        signal: undefined,
+      },
     );
 
     expect(result).toEqual(ApiResponseEmpty);

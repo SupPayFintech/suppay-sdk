@@ -37,6 +37,9 @@ describe('SupplierModule', () => {
 
     expect(httpMock.get).toHaveBeenCalledWith(
       `/api/v3/supplier/available?search=${search}&page=${page}&orderBy=${orderBy}&perPage=${perPage}`,
+      {
+        signal: undefined,
+      },
     );
 
     expect(result).toEqual(avaliableData);
@@ -65,6 +68,9 @@ describe('SupplierModule', () => {
     expect(httpMock.post).toHaveBeenCalledWith(
       '/api/v3/supplier/indicate',
       body,
+      {
+        signal: undefined,
+      },
     );
 
     expect(result).toEqual(avaliableData);

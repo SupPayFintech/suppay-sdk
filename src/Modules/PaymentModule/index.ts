@@ -1,3 +1,4 @@
+import { GenericAbortSignal } from 'axios';
 import { createQueryString } from '../../Helper/createQueryString';
 import Http from '../../Http';
 import {
@@ -53,12 +54,17 @@ export class PaymentModule {
    *
    * @async
    * @param {PaymentCreate} body - The payment creation data.
+   * @param {GenericAbortSignal} [signal] - Optional Axios CancelToken for request cancellation and control.
+   *
    * @returns {Promise<PaymentCreateResponse>} A promise that resolves to the payment creation response.
    */
-  async create(body: PaymentCreate): Promise<PaymentCreateResponse> {
+  async create(
+    body: PaymentCreate,
+    signal?: GenericAbortSignal,
+  ): Promise<PaymentCreateResponse> {
     const response = await this.http
       .auth(true)
-      .post<PaymentCreateResponse>(`/api/v3/payment/create`, body);
+      .post<PaymentCreateResponse>(`/api/v3/payment/create`, body, { signal });
 
     return response.data;
   }
@@ -71,6 +77,8 @@ export class PaymentModule {
    * @param {number} [page=1] - Page number for pagination.
    * @param {OrderBy} [orderBy=OrderBy.DESC] - Order by ascending or descending.
    * @param {PerPage} [perPage=15] - Number of items per page.
+   * @param {GenericAbortSignal} [signal] - Optional Axios CancelToken for request cancellation and control.
+   *
    * @returns {Promise<PaymentAllResponse>} A promise that resolves to the paginated payment response.
    */
   async all(
@@ -78,12 +86,13 @@ export class PaymentModule {
     page: number = 1,
     orderBy: OrderBy = OrderBy.DESC,
     perPage: PerPage = 15,
+    signal?: GenericAbortSignal,
   ): Promise<PaymentAllResponse> {
     const query = createQueryString({ search, page, orderBy, perPage });
 
     const response = await this.http
       .auth(true)
-      .get<PaymentAllResponse>(`/api/v3/payment/all?${query}`);
+      .get<PaymentAllResponse>(`/api/v3/payment/all?${query}`, { signal });
 
     return response.data;
   }
@@ -93,14 +102,19 @@ export class PaymentModule {
    *
    * @async
    * @param {PaymentParticipant} body - The payment participant data.
+   * @param {GenericAbortSignal} [signal] - Optional Axios CancelToken for request cancellation and control.
+   *
    * @returns {Promise<PaymentParticipantResponse>} A promise that resolves to the payment participant response.
    */
   async participant(
     body: PaymentParticipant,
+    signal?: GenericAbortSignal,
   ): Promise<PaymentParticipantResponse> {
     const response = await this.http
       .auth(true)
-      .post<PaymentParticipantResponse>(`/api/v3/payment/participant`, body);
+      .post<PaymentParticipantResponse>(`/api/v3/payment/participant`, body, {
+        signal,
+      });
 
     return response.data;
   }
@@ -110,15 +124,19 @@ export class PaymentModule {
    *
    * @async
    * @param {string} id - The payment ID.
+   * @param {GenericAbortSignal} [signal] - Optional Axios CancelToken for request cancellation and control.
+   *
    * @returns {Promise<PaymentRenotifyAuthorizationResponse>} A promise that resolves to the renotification response.
    */
   async renotifyAuthorization(
     id: string,
+    signal?: GenericAbortSignal,
   ): Promise<PaymentRenotifyAuthorizationResponse> {
     const response = await this.http
       .auth(true)
       .get<PaymentRenotifyAuthorizationResponse>(
         `/api/v3/payment/${id}/authorization/notify`,
+        { signal },
       );
 
     return response.data;
@@ -130,11 +148,14 @@ export class PaymentModule {
    * @async
    * @param {string} id - The payment ID.
    * @param {string} code - The authorization code.
+   * @param {GenericAbortSignal} [signal] - Optional Axios CancelToken for request cancellation and control.
+   *
    * @returns {Promise<PaymentAuthorizeWithCodeResponse>} A promise that resolves to the payment authorization response.
    */
   async authorizeWithCode(
     id: string,
     code: string,
+    signal?: GenericAbortSignal,
   ): Promise<PaymentAuthorizeWithCodeResponse> {
     const response = await this.http
       .auth(true)
@@ -143,6 +164,7 @@ export class PaymentModule {
         {
           code,
         },
+        { signal },
       );
 
     return response.data;
@@ -154,17 +176,24 @@ export class PaymentModule {
    * @async
    * @param {string} id - The payment ID.
    * @param {number} value - The new value of the payment.
+   * @param {GenericAbortSignal} [signal] - Optional Axios CancelToken for request cancellation and control.
+   *
    * @returns {Promise<PaymentChangeValueResponse>} A promise that resolves to the payment change value response.
    */
   async changeValue(
     id: string,
     value: number,
+    signal?: GenericAbortSignal,
   ): Promise<PaymentChangeValueResponse> {
     const response = await this.http
       .auth(true)
-      .post<PaymentChangeValueResponse>(`/api/v3/payment/${id}/update/value`, {
-        value,
-      });
+      .post<PaymentChangeValueResponse>(
+        `/api/v3/payment/${id}/update/value`,
+        {
+          value,
+        },
+        { signal },
+      );
 
     return response.data;
   }
@@ -175,14 +204,22 @@ export class PaymentModule {
    * @async
    * @param {string} id - The payment ID.
    * @param {string} reason - The reason for cancellation.
+   * @param {GenericAbortSignal} [signal] - Optional Axios CancelToken for request cancellation and control.
+   *
    * @returns {Promise<PaymentCancelResponse>} A promise that resolves to the payment cancellation response.
    */
-  async cancel(id: string, reason: string): Promise<PaymentCancelResponse> {
-    const response = await this.http
-      .auth(true)
-      .post<PaymentCancelResponse>(`/api/v3/payment/${id}/cancel`, {
+  async cancel(
+    id: string,
+    reason: string,
+    signal?: GenericAbortSignal,
+  ): Promise<PaymentCancelResponse> {
+    const response = await this.http.auth(true).post<PaymentCancelResponse>(
+      `/api/v3/payment/${id}/cancel`,
+      {
         reason,
-      });
+      },
+      { signal },
+    );
 
     return response.data;
   }
@@ -192,14 +229,19 @@ export class PaymentModule {
    *
    * @async
    * @param {PaymentCreateSimulate} body - The payment simulation data.
+   * @param {GenericAbortSignal} [signal] - Optional Axios CancelToken for request cancellation and control.
+   *
    * @returns {Promise<PaymentSimulateResponse>} A promise that resolves to the payment simulation response.
    */
   async simulate(
     body: PaymentCreateSimulate,
+    signal?: GenericAbortSignal,
   ): Promise<PaymentSimulateResponse> {
     const response = await this.http
       .auth(true)
-      .post<PaymentSimulateResponse>(`/api/v3/payment/simulate`, body);
+      .post<PaymentSimulateResponse>(`/api/v3/payment/simulate`, body, {
+        signal,
+      });
 
     return response.data;
   }
@@ -209,14 +251,20 @@ export class PaymentModule {
    *
    * @async
    * @param {string} code - The authorization code.
+   * @param {GenericAbortSignal} [signal] - Optional Axios CancelToken for request cancellation and control.
+   *
    * @returns {Promise<PaymentAuthorizeByCodeResponse>} A promise that resolves to the payment authorization response.
    */
-  async authorizeByCode(code: string): Promise<PaymentAuthorizeByCodeResponse> {
+  async authorizeByCode(
+    code: string,
+    signal?: GenericAbortSignal,
+  ): Promise<PaymentAuthorizeByCodeResponse> {
     const response = await this.http
       .auth(true)
       .post<PaymentAuthorizeByCodeResponse>(
         `/api/v3/authorization/execute/with-code`,
         { code },
+        { signal },
       );
 
     return response.data;
@@ -230,7 +278,9 @@ export class PaymentModule {
    * @param {PaymentProofType} type - The type of proof to attach.
    * @param {File|string} value - The proof file or key.
    * @param {number} [amount] - The amount, required if the proof type is FILE.
+   * @param {GenericAbortSignal} [signal] - Optional Axios CancelToken for request cancellation and control.
    * @throws {Error} if the required 'amount' attribute is missing for FILE type.
+   *
    * @returns {Promise<PaymentAttachProofResponse>} A promise that resolves to the payment attach proof response.
    */
   async attachProof(
@@ -238,8 +288,10 @@ export class PaymentModule {
     type: PaymentProofType,
     value: File | string,
     amount?: number,
+    signal?: GenericAbortSignal,
   ): Promise<PaymentAttachProofResponse> {
     const headers = {
+      signal,
       headers: {
         'Content-Type': 'multipart/form-data',
       },

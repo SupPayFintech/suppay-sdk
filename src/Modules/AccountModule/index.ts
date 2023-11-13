@@ -1,3 +1,4 @@
+import { GenericAbortSignal } from 'axios';
 import Http from '../../Http';
 import { ApiResponse } from '../../SupPayClient.type';
 import {
@@ -35,12 +36,18 @@ export class AccountModule {
    *
    * @async
    * @param {string} document - The document to be used for recovery verification.
+   * @param {GenericAbortSignal} [signal] - Optional Axios CancelToken for request cancellation and control.
+   *
    * @returns {Promise<RecoveryVerifyResponse>} A promise that resolves to the recovery verification response.
    */
-  async verifyRecovery(document: string): Promise<RecoveryVerifyResponse> {
+  async verifyRecovery(
+    document: string,
+    signal?: GenericAbortSignal,
+  ): Promise<RecoveryVerifyResponse> {
     const response = await this.http.post<RecoveryVerifyResponse>(
       '/api/v3/register/recovery/verify',
       { document },
+      { signal },
     );
     return response.data;
   }
@@ -51,15 +58,19 @@ export class AccountModule {
    * @async
    * @param {string} code - The recovery code.
    * @param {string} document - The document associated with the account.
+   * @param {GenericAbortSignal} [signal] - Optional Axios CancelToken for request cancellation and control.
+   *
    * @returns {Promise<RecoveryValidationResponse>} A promise that resolves to the recovery validation response.
    */
   async validateRecovery(
     code: string,
     document: string,
+    signal?: GenericAbortSignal,
   ): Promise<RecoveryValidationResponse> {
     const response = await this.http.post<RecoveryValidationResponse>(
       '/api/v3/register/recovery/validate',
       { code, document },
+      { signal },
     );
     return response.data;
   }
@@ -71,12 +82,15 @@ export class AccountModule {
    * @param {string} identifier - The account identifier.
    * @param {string} password - The new password.
    * @param {string} passwordConfirmation - Confirmation of the new password.
+   * @param {GenericAbortSignal} [signal] - Optional Axios CancelToken for request cancellation and control.
+   *
    * @returns {Promise<ApiResponse>} A promise that resolves to the password reset response.
    */
   async resetPassword(
     identifier: string,
     password: string,
     passwordConfirmation: string,
+    signal?: GenericAbortSignal,
   ): Promise<ApiResponse> {
     const response = await this.http.post<ApiResponse>(
       '/api/v3/register/recovery/reset',
@@ -85,6 +99,7 @@ export class AccountModule {
         password,
         password_confirmation: passwordConfirmation,
       },
+      { signal },
     );
     return response.data;
   }
@@ -93,12 +108,14 @@ export class AccountModule {
    * Retrieves the context of the current user.
    *
    * @async
+   * @param {GenericAbortSignal} [signal] - Optional Axios CancelToken for request cancellation and control.
+   *
    * @returns {Promise<UserContextResponse>} A promise that resolves to the user context response.
    */
-  async context(): Promise<UserContextResponse> {
+  async context(signal?: GenericAbortSignal): Promise<UserContextResponse> {
     const response = await this.http
       .auth(true)
-      .get<UserContextResponse>('/api/v3/user/profile');
+      .get<UserContextResponse>('/api/v3/user/profile', { signal });
     return response.data;
   }
 }

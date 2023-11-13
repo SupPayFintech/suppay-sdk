@@ -1,3 +1,4 @@
+import { GenericAbortSignal } from 'axios';
 import { createQueryString } from '../../Helper/createQueryString';
 import Http from '../../Http';
 import {
@@ -49,13 +50,17 @@ export class RegisterModule {
    *
    * @async
    * @param {string} document - The document number to check.
+   * @param {GenericAbortSignal} [signal] - Optional Axios CancelToken for request cancellation and control.
+   *
    * @returns {Promise<DocumentAvailableResponse>} - The response indicating if the document is available.
    */
   async documentAvailable(
     document: string,
+    signal?: GenericAbortSignal,
   ): Promise<DocumentAvailableResponse> {
     const response = await this.http.get<DocumentAvailableResponse>(
       `/api/v3/register/verification/document/verify/${document}`,
+      { signal },
     );
 
     return response.data;
@@ -66,11 +71,17 @@ export class RegisterModule {
    *
    * @async
    * @param {string} phone - The phone number to send the verification code to.
+   * @param {GenericAbortSignal} [signal] - Optional Axios CancelToken for request cancellation and control.
+   *
    * @returns {Promise<SendMobileCodeResponse>} - The response after sending the mobile code.
    */
-  async sendMobileCode(phone: string): Promise<SendMobileCodeResponse> {
+  async sendMobileCode(
+    phone: string,
+    signal?: GenericAbortSignal,
+  ): Promise<SendMobileCodeResponse> {
     const response = await this.http.get<SendMobileCodeResponse>(
       `/api/v3/register/verification/phone/send/${phone}`,
+      { signal },
     );
 
     return response.data;
@@ -82,14 +93,18 @@ export class RegisterModule {
    * @async
    * @param {string} phone - The phone number to verify.
    * @param {string} code - The verification code sent to the phone.
+   * @param {GenericAbortSignal} [signal] - Optional Axios CancelToken for request cancellation and control.
+   *
    * @returns {Promise<VerifyMobileCodeResponse>} - The response after verifying the mobile code.
    */
   async verifyMobileCode(
     phone: string,
     code: string,
+    signal?: GenericAbortSignal,
   ): Promise<VerifyMobileCodeResponse> {
     const response = await this.http.get<VerifyMobileCodeResponse>(
       `/api/v3/register/verification/phone/verify/${phone}/${code}`,
+      { signal },
     );
 
     return response.data;
@@ -101,13 +116,17 @@ export class RegisterModule {
    * @async
    * @param {RegisterDocumentType} type - The type of document.
    * @param {File} file - The picture file to attach.
+   * @param {GenericAbortSignal} [signal] - Optional Axios CancelToken for request cancellation and control.
+   *
    * @returns {Promise<AttachPictureResponse>} - The response after attaching the picture.
    */
   async attachPicture(
     type: RegisterDocumentType,
     file: File,
+    signal?: GenericAbortSignal,
   ): Promise<AttachPictureResponse> {
     const headers = {
+      signal,
       headers: {
         'Content-Type': 'multipart/form-data',
       },
@@ -131,12 +150,18 @@ export class RegisterModule {
    *
    * @async
    * @param {CreateRegisterData} body - The data for creating the register.
+   * @param {GenericAbortSignal} [signal] - Optional Axios CancelToken for request cancellation and control.
+   *
    * @returns {Promise<CreateResponse>} - The response after creating the register.
    */
-  async create(body: CreateRegisterData): Promise<CreateResponse> {
+  async create(
+    body: CreateRegisterData,
+    signal?: GenericAbortSignal,
+  ): Promise<CreateResponse> {
     const response = await this.http.post<CreateResponse>(
       `/api/v3/register/commercial-establishment`,
       body,
+      { signal },
     );
 
     return response.data;
@@ -150,6 +175,8 @@ export class RegisterModule {
    * @param {number} [page=1] - The page number for pagination.
    * @param {OrderBy} [orderBy=OrderBy.DESC] - The order by which to sort the results.
    * @param {PerPage} [perPage=15] - The number of items per page.
+   * @param {GenericAbortSignal} [signal] - Optional Axios CancelToken for request cancellation and control.
+   *
    * @returns {Promise<RegisterAllResponse>} - The paginated response of all registers.
    */
   async all(
@@ -157,12 +184,13 @@ export class RegisterModule {
     page: number = 1,
     orderBy: OrderBy = OrderBy.DESC,
     perPage: PerPage = 15,
+    signal?: GenericAbortSignal,
   ): Promise<RegisterAllResponse> {
     const query = createQueryString({ search, page, orderBy, perPage });
 
     const response = await this.http
       .auth(true)
-      .get<RegisterAllResponse>(`/api/v3/register/all?${query}`);
+      .get<RegisterAllResponse>(`/api/v3/register/all?${query}`, { signal });
 
     return response.data;
   }
@@ -172,12 +200,17 @@ export class RegisterModule {
    *
    * @async
    * @param {string} id - The ID of the register.
+   * @param {GenericAbortSignal} [signal] - Optional Axios CancelToken for request cancellation and control.
+   *
    * @returns {Promise<RegisterResumeResponse>} - The response containing the register's resume.
    */
-  async resume(id: string): Promise<RegisterResumeResponse> {
+  async resume(
+    id: string,
+    signal?: GenericAbortSignal,
+  ): Promise<RegisterResumeResponse> {
     const response = await this.http
       .auth(true)
-      .get<RegisterResumeResponse>(`/api/v3/register/${id}/resume`);
+      .get<RegisterResumeResponse>(`/api/v3/register/${id}/resume`, { signal });
 
     return response.data;
   }
@@ -188,17 +221,21 @@ export class RegisterModule {
    * @async
    * @param {string} id - The ID of the register to approve.
    * @param {ApproveRegisterData} body - The data required to approve the register.
+   * @param {GenericAbortSignal} [signal] - Optional Axios CancelToken for request cancellation and control.
+   *
    * @returns {Promise<RegisterApproveResponse>} - The response after approving the register.
    */
   async approve(
     id: string,
     body: ApproveRegisterData,
+    signal?: GenericAbortSignal,
   ): Promise<RegisterApproveResponse> {
     const response = await this.http
       .auth(true)
       .post<RegisterApproveResponse>(
         `/api/v3/register/commercial-establishment/${id}/approve`,
         body,
+        { signal },
       );
 
     return response.data;

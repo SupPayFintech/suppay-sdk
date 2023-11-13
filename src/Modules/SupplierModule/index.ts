@@ -1,3 +1,4 @@
+import { GenericAbortSignal } from 'axios';
 import { createQueryString } from '../../Helper/createQueryString';
 import Http from '../../Http';
 import {
@@ -19,6 +20,7 @@ export type SupplierIndicateResponse = ApiResponse;
 
 /**
  * SupplierModule
+ *
  * This class provides functionalities related to supplier management, including listing available suppliers and indicating new suppliers.
  * It uses an HTTP client to communicate with supplier-related API endpoints.
  *
@@ -46,6 +48,8 @@ export class SupplierModule {
    * @param {number} [page=1] - Page number for pagination.
    * @param {OrderBy} [orderBy=OrderBy.DESC] - Order by ascending or descending.
    * @param {PerPage} [perPage=15] - Number of items per page.
+   * @param {GenericAbortSignal} [signal] - Optional Axios CancelToken for request cancellation and control.
+   *
    * @returns {Promise<SupplierAvailableResponse>} A promise that resolves to the paginated supplier available response.
    */
   async available(
@@ -53,11 +57,13 @@ export class SupplierModule {
     page: number = 1,
     orderBy: OrderBy = OrderBy.DESC,
     perPage: PerPage = 15,
+    signal?: GenericAbortSignal,
   ): Promise<SupplierAvailableResponse> {
     const query = createQueryString({ search, page, orderBy, perPage });
 
     const response = await this.http.get<SupplierAvailableResponse>(
       `/api/v3/supplier/available?${query}`,
+      { signal },
     );
 
     return response.data;
@@ -68,14 +74,18 @@ export class SupplierModule {
    *
    * @async
    * @param {SupplierIndicateCreate} body - The supplier indication data.
+   * @param {GenericAbortSignal} [signal] - Optional Axios CancelToken for request cancellation and control.
+   *
    * @returns {Promise<SupplierIndicateResponse>} A promise that resolves to the supplier indicate response.
    */
   async indicate(
     body: SupplierIndicateCreate,
+    signal?: GenericAbortSignal,
   ): Promise<SupplierIndicateResponse> {
     const response = await this.http.post<SupplierIndicateResponse>(
       `/api/v3/supplier/indicate`,
       body,
+      { signal },
     );
 
     return response.data;

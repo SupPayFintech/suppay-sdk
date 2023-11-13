@@ -52,7 +52,9 @@ describe('PaymentModule', () => {
 
     expect(httpMock.auth).toHaveBeenCalledWith(true);
 
-    expect(httpMock.post).toHaveBeenCalledWith('/api/v3/payment/create', body);
+    expect(httpMock.post).toHaveBeenCalledWith('/api/v3/payment/create', body, {
+      signal: undefined,
+    });
 
     expect(result).toEqual(paymentCreateData);
   });
@@ -75,6 +77,9 @@ describe('PaymentModule', () => {
 
     expect(httpMock.get).toHaveBeenCalledWith(
       `/api/v3/payment/all?search=${search}&page=${page}&orderBy=${orderBy}&perPage=${perPage}`,
+      {
+        signal: undefined,
+      },
     );
 
     expect(result).toEqual(paymentAllData);
@@ -99,6 +104,9 @@ describe('PaymentModule', () => {
     expect(httpMock.post).toHaveBeenCalledWith(
       '/api/v3/payment/participant',
       body,
+      {
+        signal: undefined,
+      },
     );
 
     expect(result).toEqual(paymentParticipantData);
@@ -119,6 +127,9 @@ describe('PaymentModule', () => {
 
     expect(httpMock.get).toHaveBeenCalledWith(
       `/api/v3/payment/${id}/authorization/notify`,
+      {
+        signal: undefined,
+      },
     );
 
     expect(result).toEqual(ApiResponseEmpty);
@@ -141,6 +152,9 @@ describe('PaymentModule', () => {
     expect(httpMock.post).toHaveBeenCalledWith(
       `/api/v3/payment/${id}/authorization/execute/with-code`,
       { code },
+      {
+        signal: undefined,
+      },
     );
 
     expect(result).toEqual(ApiResponseEmpty);
@@ -163,6 +177,9 @@ describe('PaymentModule', () => {
     expect(httpMock.post).toHaveBeenCalledWith(
       `/api/v3/payment/${id}/update/value`,
       { value },
+      {
+        signal: undefined,
+      },
     );
 
     expect(result).toEqual(ApiResponseEmpty);
@@ -182,9 +199,15 @@ describe('PaymentModule', () => {
 
     expect(httpMock.auth).toHaveBeenCalledWith(true);
 
-    expect(httpMock.post).toHaveBeenCalledWith(`/api/v3/payment/${id}/cancel`, {
-      reason,
-    });
+    expect(httpMock.post).toHaveBeenCalledWith(
+      `/api/v3/payment/${id}/cancel`,
+      {
+        reason,
+      },
+      {
+        signal: undefined,
+      },
+    );
 
     expect(result).toEqual(ApiResponseEmpty);
   });
@@ -217,6 +240,9 @@ describe('PaymentModule', () => {
     expect(httpMock.post).toHaveBeenCalledWith(
       `/api/v3/payment/simulate`,
       body,
+      {
+        signal: undefined,
+      },
     );
 
     expect(result).toEqual(paymentSimulateData);
@@ -239,6 +265,9 @@ describe('PaymentModule', () => {
       `/api/v3/authorization/execute/with-code`,
       {
         code,
+      },
+      {
+        signal: undefined,
       },
     );
 
@@ -268,7 +297,7 @@ describe('PaymentModule', () => {
     expect(httpMock.post).toHaveBeenCalledWith(
       `/api/v3/payment/${id}/proof/attach`,
       formData,
-      { headers: { 'Content-Type': 'multipart/form-data' } },
+      { signal: undefined, headers: { 'Content-Type': 'multipart/form-data' } },
     );
 
     expect(result).toEqual(paymentCreateData);

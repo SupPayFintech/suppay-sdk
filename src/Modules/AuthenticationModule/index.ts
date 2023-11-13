@@ -1,3 +1,4 @@
+import { GenericAbortSignal } from 'axios';
 import Http from '../../Http';
 import { ApiResponse } from '../../SupPayClient.type';
 import { LoginData } from './AuthenticationModule.type';
@@ -33,11 +34,17 @@ export class AuthenticationModule {
    * @param {string} username - The username of the user.
    * @param {string} password - The password of the user.
    * @returns {Promise<LoginResponse>} A promise that resolves to the login response. This response includes the authentication token if the login is successful.
+   * @param {GenericAbortSignal} [signal] - Optional Axios CancelToken for request cancellation and control.
    */
-  async login(username: string, password: string): Promise<LoginResponse> {
+  async login(
+    username: string,
+    password: string,
+    signal?: GenericAbortSignal,
+  ): Promise<LoginResponse> {
     const response = await this.http.post<LoginResponse>(
       '/api/v3/tokens/create',
       { username, password },
+      { signal },
     );
 
     if (response.data.success && response.data.data?.token) {
