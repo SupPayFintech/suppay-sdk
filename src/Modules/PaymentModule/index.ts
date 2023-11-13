@@ -27,13 +27,34 @@ export type PaymentSimulateResponse = ApiResponse<PaymentSimulateData>;
 export type PaymentAuthorizeByCodeResponse = ApiResponse<PaymentData>;
 export type PaymentAttachProofResponse = ApiResponse<PaymentData>;
 
+/**
+ * PaymentModule
+ * This class provides functionalities related to payment processing, including creation, retrieval, modification, and simulation of payments.
+ * It uses an HTTP client to communicate with payment-related API endpoints.
+ *
+ * @class
+ * @property {Http} http - An instance of Http for making API requests.
+ */
 export class PaymentModule {
   private http: Http;
 
+  /**
+   * Creates an instance of PaymentModule.
+   *
+   * @constructor
+   * @param {Http} http - The HTTP client used for making API requests.
+   */
   constructor(http: Http) {
     this.http = http;
   }
 
+  /**
+   * Creates a new payment.
+   *
+   * @async
+   * @param {PaymentCreate} body - The payment creation data.
+   * @returns {Promise<PaymentCreateResponse>} A promise that resolves to the payment creation response.
+   */
   async create(body: PaymentCreate): Promise<PaymentCreateResponse> {
     const response = await this.http
       .auth(true)
@@ -42,6 +63,16 @@ export class PaymentModule {
     return response.data;
   }
 
+  /**
+   * Retrieves a paginated list of all payments.
+   *
+   * @async
+   * @param {string} [search] - Optional search query.
+   * @param {number} [page=1] - Page number for pagination.
+   * @param {OrderBy} [orderBy=OrderBy.DESC] - Order by ascending or descending.
+   * @param {PerPage} [perPage=15] - Number of items per page.
+   * @returns {Promise<PaymentAllResponse>} A promise that resolves to the paginated payment response.
+   */
   async all(
     search?: string,
     page: number = 1,
@@ -57,6 +88,13 @@ export class PaymentModule {
     return response.data;
   }
 
+  /**
+   * Adds a participant to a payment.
+   *
+   * @async
+   * @param {PaymentParticipant} body - The payment participant data.
+   * @returns {Promise<PaymentParticipantResponse>} A promise that resolves to the payment participant response.
+   */
   async participant(
     body: PaymentParticipant,
   ): Promise<PaymentParticipantResponse> {
@@ -67,6 +105,13 @@ export class PaymentModule {
     return response.data;
   }
 
+  /**
+   * Notifies the authorization of a payment again.
+   *
+   * @async
+   * @param {string} id - The payment ID.
+   * @returns {Promise<PaymentRenotifyAuthorizationResponse>} A promise that resolves to the renotification response.
+   */
   async renotifyAuthorization(
     id: string,
   ): Promise<PaymentRenotifyAuthorizationResponse> {
@@ -79,6 +124,14 @@ export class PaymentModule {
     return response.data;
   }
 
+  /**
+   * Authorizes a payment with a given code.
+   *
+   * @async
+   * @param {string} id - The payment ID.
+   * @param {string} code - The authorization code.
+   * @returns {Promise<PaymentAuthorizeWithCodeResponse>} A promise that resolves to the payment authorization response.
+   */
   async authorizeWithCode(
     id: string,
     code: string,
@@ -95,6 +148,14 @@ export class PaymentModule {
     return response.data;
   }
 
+  /**
+   * Changes the value of an existing payment.
+   *
+   * @async
+   * @param {string} id - The payment ID.
+   * @param {number} value - The new value of the payment.
+   * @returns {Promise<PaymentChangeValueResponse>} A promise that resolves to the payment change value response.
+   */
   async changeValue(
     id: string,
     value: number,
@@ -108,6 +169,14 @@ export class PaymentModule {
     return response.data;
   }
 
+  /**
+   * Cancels a payment.
+   *
+   * @async
+   * @param {string} id - The payment ID.
+   * @param {string} reason - The reason for cancellation.
+   * @returns {Promise<PaymentCancelResponse>} A promise that resolves to the payment cancellation response.
+   */
   async cancel(id: string, reason: string): Promise<PaymentCancelResponse> {
     const response = await this.http
       .auth(true)
@@ -118,6 +187,13 @@ export class PaymentModule {
     return response.data;
   }
 
+  /**
+   * Simulates a payment.
+   *
+   * @async
+   * @param {PaymentCreateSimulate} body - The payment simulation data.
+   * @returns {Promise<PaymentSimulateResponse>} A promise that resolves to the payment simulation response.
+   */
   async simulate(
     body: PaymentCreateSimulate,
   ): Promise<PaymentSimulateResponse> {
@@ -128,6 +204,13 @@ export class PaymentModule {
     return response.data;
   }
 
+  /**
+   * Authorizes a payment by a given code.
+   *
+   * @async
+   * @param {string} code - The authorization code.
+   * @returns {Promise<PaymentAuthorizeByCodeResponse>} A promise that resolves to the payment authorization response.
+   */
   async authorizeByCode(code: string): Promise<PaymentAuthorizeByCodeResponse> {
     const response = await this.http
       .auth(true)
@@ -139,6 +222,17 @@ export class PaymentModule {
     return response.data;
   }
 
+  /**
+   * Attaches a proof to a payment.
+   *
+   * @async
+   * @param {string} id - The payment ID.
+   * @param {PaymentProofType} type - The type of proof to attach.
+   * @param {File|string} value - The proof file or key.
+   * @param {number} [amount] - The amount, required if the proof type is FILE.
+   * @throws {Error} if the required 'amount' attribute is missing for FILE type.
+   * @returns {Promise<PaymentAttachProofResponse>} A promise that resolves to the payment attach proof response.
+   */
   async attachProof(
     id: string,
     type: PaymentProofType,

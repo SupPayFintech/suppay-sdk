@@ -17,13 +17,37 @@ export type SupplierAvailableResponse =
 
 export type SupplierIndicateResponse = ApiResponse;
 
+/**
+ * SupplierModule
+ * This class provides functionalities related to supplier management, including listing available suppliers and indicating new suppliers.
+ * It uses an HTTP client to communicate with supplier-related API endpoints.
+ *
+ * @class
+ * @property {Http} http - An instance of Http for making API requests.
+ */
 export class SupplierModule {
   private http: Http;
 
+  /**
+   * Creates an instance of SupplierModule.
+   *
+   * @constructor
+   * @param {Http} http - The HTTP client used for making API requests.
+   */
   constructor(http: Http) {
     this.http = http;
   }
 
+  /**
+   * Retrieves a paginated list of available suppliers.
+   *
+   * @async
+   * @param {string} [search] - Optional search query.
+   * @param {number} [page=1] - Page number for pagination.
+   * @param {OrderBy} [orderBy=OrderBy.DESC] - Order by ascending or descending.
+   * @param {PerPage} [perPage=15] - Number of items per page.
+   * @returns {Promise<SupplierAvailableResponse>} A promise that resolves to the paginated supplier available response.
+   */
   async available(
     search?: string,
     page: number = 1,
@@ -39,6 +63,13 @@ export class SupplierModule {
     return response.data;
   }
 
+  /**
+   * Indicates a new supplier.
+   *
+   * @async
+   * @param {SupplierIndicateCreate} body - The supplier indication data.
+   * @returns {Promise<SupplierIndicateResponse>} A promise that resolves to the supplier indicate response.
+   */
   async indicate(
     body: SupplierIndicateCreate,
   ): Promise<SupplierIndicateResponse> {

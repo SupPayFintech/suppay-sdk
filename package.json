@@ -1,15 +1,26 @@
 {
   "name": "suppay-sdk",
   "version": "1.0.0",
-  "description": "",
-  "main": "index.js",
+  "description": "Easy integration SDK/Client for SupPay core API",
+  "main": "dist/index.js",
+  "types": "dist/index.d.ts",
   "scripts": {
+    "build": "tsc",
+    "prepublishOnly": "npm run build",
     "test": "jest --collectCoverage",
-    "lint": "eslint . --ext .ts, --fix"
+    "lint": "eslint . --ext .ts --fix"
   },
-  "keywords": [],
-  "author": "",
+  "keywords": [
+    "sdk",
+    "suppay",
+    "finance",
+    "api"
+  ],
+  "author": "Leandro Ferreira <leandro.daf4@gmail.com>",
   "license": "ISC",
+  "files": [
+    "dist"
+  ],
   "devDependencies": {
     "@types/jest": "^29.5.8",
     "@types/node": "^20.9.0",
