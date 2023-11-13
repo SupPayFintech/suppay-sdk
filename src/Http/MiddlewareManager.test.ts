@@ -1,8 +1,8 @@
-import { AxiosRequestConfig, AxiosResponse } from "axios";
-import { MiddlewareManager } from "./MiddlewareManager";
+import { AxiosRequestConfig, AxiosResponse } from 'axios';
+import { MiddlewareManager } from './MiddlewareManager';
 
-describe("MiddlewareManager", () => {
-  it("should add request interceptor", () => {
+describe('MiddlewareManager', () => {
+  it('should add request interceptor', () => {
     const manager = new MiddlewareManager();
     const interceptor = (config: AxiosRequestConfig) => ({
       ...config,
@@ -11,10 +11,10 @@ describe("MiddlewareManager", () => {
     manager.addRequestInterceptor(interceptor);
 
     const result = manager.applyRequestInterceptors({});
-    expect(result).toHaveProperty("test", true);
+    expect(result).toHaveProperty('test', true);
   });
 
-  it("should add response interceptor", () => {
+  it('should add response interceptor', () => {
     const manager = new MiddlewareManager();
     const interceptor = (response: AxiosResponse) => ({
       ...response,
@@ -23,6 +23,6 @@ describe("MiddlewareManager", () => {
     manager.addResponseInterceptor(interceptor);
 
     const result = manager.applyResponseInterceptors({} as AxiosResponse);
-    expect(result).toHaveProperty("test", true);
+    expect(result).toHaveProperty('test', true);
   });
 });

@@ -1,11 +1,11 @@
-import { createQueryString } from "../../Helper/createQueryString";
-import Http from "../../Http";
+import { createQueryString } from '../../Helper/createQueryString';
+import Http from '../../Http';
 import {
   ApiResponse,
   ApiResponsePaginate,
   OrderBy,
   PerPage,
-} from "../../SupPayClient.type";
+} from '../../SupPayClient.type';
 import {
   PaymentCreate,
   PaymentCreateSimulate,
@@ -13,8 +13,8 @@ import {
   PaymentParticipant,
   PaymentParticipantData,
   PaymentSimulateData,
-} from "./PaymentInterfaces.type";
-import { PaymentProofType } from "./PaymentTypes.type";
+} from './PaymentInterfaces.type';
+import { PaymentProofType } from './PaymentTypes.type';
 
 export type PaymentCreateResponse = ApiResponse<PaymentData>;
 export type PaymentAllResponse = ApiResponsePaginate<PaymentData>;
@@ -37,7 +37,7 @@ export class PaymentModule {
   async create(body: PaymentCreate): Promise<PaymentCreateResponse> {
     const response = await this.http.post<PaymentCreateResponse>(
       `/api/v3/payment/create`,
-      body
+      body,
     );
 
     return response.data;
@@ -47,33 +47,33 @@ export class PaymentModule {
     search?: string,
     page: number = 1,
     orderBy: OrderBy = OrderBy.DESC,
-    perPage: PerPage = 15
+    perPage: PerPage = 15,
   ): Promise<PaymentAllResponse> {
     const query = createQueryString({ search, page, orderBy, perPage });
 
     const response = await this.http.get<PaymentAllResponse>(
-      `/api/v3/payment/all?${query}`
+      `/api/v3/payment/all?${query}`,
     );
 
     return response.data;
   }
 
   async participant(
-    body: PaymentParticipant
+    body: PaymentParticipant,
   ): Promise<PaymentParticipantResponse> {
     const response = await this.http.post<PaymentParticipantResponse>(
       `/api/v3/payment/participant`,
-      body
+      body,
     );
 
     return response.data;
   }
 
   async renotifyAuthorization(
-    id: string
+    id: string,
   ): Promise<PaymentRenotifyAuthorizationResponse> {
     const response = await this.http.get<PaymentRenotifyAuthorizationResponse>(
-      `/api/v3/payment/${id}/authorization/notify`
+      `/api/v3/payment/${id}/authorization/notify`,
     );
 
     return response.data;
@@ -81,13 +81,13 @@ export class PaymentModule {
 
   async authorizeWithCode(
     id: string,
-    code: string
+    code: string,
   ): Promise<PaymentAuthorizeWithCodeResponse> {
     const response = await this.http.post<PaymentAuthorizeWithCodeResponse>(
       `/api/v3/payment/${id}/authorization/execute/with-code`,
       {
         code,
-      }
+      },
     );
 
     return response.data;
@@ -95,13 +95,13 @@ export class PaymentModule {
 
   async changeValue(
     id: string,
-    value: number
+    value: number,
   ): Promise<PaymentChangeValueResponse> {
     const response = await this.http.post<PaymentChangeValueResponse>(
       `/api/v3/payment/${id}/update/value`,
       {
         value,
-      }
+      },
     );
 
     return response.data;
@@ -112,18 +112,18 @@ export class PaymentModule {
       `/api/v3/payment/${id}/cancel`,
       {
         reason,
-      }
+      },
     );
 
     return response.data;
   }
 
   async simulate(
-    body: PaymentCreateSimulate
+    body: PaymentCreateSimulate,
   ): Promise<PaymentSimulateResponse> {
     const response = await this.http.post<PaymentSimulateResponse>(
       `/api/v3/payment/simulate`,
-      body
+      body,
     );
 
     return response.data;
@@ -132,7 +132,7 @@ export class PaymentModule {
   async authorizeByCode(code: string): Promise<PaymentAuthorizeByCodeResponse> {
     const response = await this.http.post<PaymentAuthorizeByCodeResponse>(
       `/api/v3/authorization/execute/with-code`,
-      { code }
+      { code },
     );
 
     return response.data;
@@ -142,33 +142,33 @@ export class PaymentModule {
     id: string,
     type: PaymentProofType,
     value: File | string,
-    amount?: number
+    amount?: number,
   ): Promise<PaymentAttachProofResponse> {
     const headers = {
       headers: {
-        "Content-Type": "multipart/form-data",
+        'Content-Type': 'multipart/form-data',
       },
     };
 
     const formData = new FormData();
-    formData.append("type", type);
+    formData.append('type', type);
 
     if (PaymentProofType.FILE === type) {
       if (!amount)
-        throw new Error("The amount attribute is mandatory for the FILE type");
+        throw new Error('The amount attribute is mandatory for the FILE type');
 
-      formData.append("file", value);
-      formData.append("value", amount.toString());
+      formData.append('file', value);
+      formData.append('value', amount.toString());
     }
 
     if (PaymentProofType.INVOICE === type) {
-      formData.append("key", value);
+      formData.append('key', value);
     }
 
     const response = await this.http.post<PaymentAttachProofResponse>(
       `/api/v3/payment/${id}/proof/attach`,
       formData,
-      headers
+      headers,
     );
 
     return response.data;

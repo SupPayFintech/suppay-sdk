@@ -1,15 +1,15 @@
-import { SupplierModule } from "./index";
-import Http from "../../Http";
-import { createMockAxiosResponse } from "../../jest-helper";
+import { SupplierModule } from './index';
+import Http from '../../Http';
+import { createMockAxiosResponse } from '../../jest-helper';
 
-import { avaliableData } from "./fixtures/response-avaliable";
+import { avaliableData } from './fixtures/response-avaliable';
 
-import { OrderBy } from "../../SupPayClient.type";
-import { SupplierIndicateCreate } from "./SupplierModule.type";
+import { OrderBy } from '../../SupPayClient.type';
+import { SupplierIndicateCreate } from './SupplierModule.type';
 
-jest.mock("../../Http");
+jest.mock('../../Http');
 
-describe("SupplierModule", () => {
+describe('SupplierModule', () => {
   let httpMock: jest.Mocked<Http>;
   let authModule: SupplierModule;
 
@@ -18,8 +18,8 @@ describe("SupplierModule", () => {
     authModule = new SupplierModule(httpMock);
   });
 
-  it("Should return the available suppliers", async () => {
-    const search = "example";
+  it('Should return the available suppliers', async () => {
+    const search = 'example';
     const page = 2;
     const orderBy = OrderBy.ASC;
     const perPage = 20;
@@ -31,24 +31,24 @@ describe("SupplierModule", () => {
     const result = await authModule.available(search, page, orderBy, perPage);
 
     expect(httpMock.get).toHaveBeenCalledWith(
-      `/api/v3/supplier/available?search=${search}&page=${page}&orderBy=${orderBy}&perPage=${perPage}`
+      `/api/v3/supplier/available?search=${search}&page=${page}&orderBy=${orderBy}&perPage=${perPage}`,
     );
 
     expect(result).toEqual(avaliableData);
   });
 
-  it("Should call the supplier indication API", async () => {
+  it('Should call the supplier indication API', async () => {
     const body: SupplierIndicateCreate = {
       requester: {
-        name: "example",
-        phone: "example",
-        email: "example@mail.com",
+        name: 'example',
+        phone: 'example',
+        email: 'example@mail.com',
       },
       indicated: {
-        name: "example",
-        document: "example",
+        name: 'example',
+        document: 'example',
       },
-      message: "example",
+      message: 'example',
     };
 
     const mockResponse = createMockAxiosResponse(avaliableData);
@@ -58,8 +58,8 @@ describe("SupplierModule", () => {
     const result = await authModule.indicate(body);
 
     expect(httpMock.post).toHaveBeenCalledWith(
-      "/api/v3/supplier/indicate",
-      body
+      '/api/v3/supplier/indicate',
+      body,
     );
 
     expect(result).toEqual(avaliableData);

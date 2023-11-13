@@ -1,4 +1,4 @@
-import { PaymentProofLabel, PaymentProofType } from "./PaymentTypes.type";
+import { PaymentProofLabel, PaymentProofType } from './PaymentTypes.type';
 
 type PaymentProofTypeToLabel = {
   [PaymentProofType.INVOICE]: PaymentProofLabel.INVOICE;

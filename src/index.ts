@@ -1,9 +1,9 @@
-import Http from "./Http";
-import { AccountModule } from "./Modules/AccountModule";
-import { AuthenticationModule } from "./Modules/AuthenticationModule";
-import { AxiosRequestConfig } from "axios";
-import { SupplierModule } from "./Modules/SupplierModule";
-import { PaymentModule } from "./Modules/PaymentModule";
+import Http from './Http';
+import { AccountModule } from './Modules/AccountModule';
+import { AuthenticationModule } from './Modules/AuthenticationModule';
+import { AxiosRequestConfig } from 'axios';
+import { SupplierModule } from './Modules/SupplierModule';
+import { PaymentModule } from './Modules/PaymentModule';
 
 class SupPayClient {
   private http: Http;

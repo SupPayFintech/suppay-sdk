@@ -17,8 +17,8 @@ export interface ApiResponsePaginate<T> {
 }
 
 export enum OrderBy {
-  DESC = "desc",
-  ASC = "asc",
+  DESC = 'desc',
+  ASC = 'asc',
 }
 
 export type PerPage = number;

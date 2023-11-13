@@ -1,8 +1,8 @@
 import {
   FilePaymentProof,
   InvoicePaymentProof,
-} from "./PaymentProofTypes.type";
-import { PaymentStatus, PaymentType } from "./PaymentTypes.type";
+} from './PaymentProofTypes.type';
+import { PaymentStatus, PaymentType } from './PaymentTypes.type';
 
 export interface PaymentCreate {
   type: PaymentType;
@@ -12,7 +12,7 @@ export interface PaymentCreate {
       identifier: string;
       due_date: string;
       value: number;
-    }
+    },
   ];
   supplier_document: string;
   commercial_establishment_document: string;

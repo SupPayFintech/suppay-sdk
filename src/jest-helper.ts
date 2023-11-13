@@ -1,9 +1,9 @@
-import { AxiosResponse } from "axios";
+import { AxiosResponse } from 'axios';
 
 export function createMockAxiosResponse<T>(
   data: T,
   status = 200,
-  statusText = "OK"
+  statusText = 'OK',
 ): AxiosResponse<T> {
   return {
     data,

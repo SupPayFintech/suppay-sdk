@@ -1,12 +1,12 @@
-import { AuthenticationModule } from "./index";
-import Http from "../../Http";
-import { createMockAxiosResponse } from "../../jest-helper";
+import { AuthenticationModule } from './index';
+import Http from '../../Http';
+import { createMockAxiosResponse } from '../../jest-helper';
 
-import { loginResponseData } from "./fixtures/response-login";
+import { loginResponseData } from './fixtures/response-login';
 
-jest.mock("../../Http");
+jest.mock('../../Http');
 
-describe("AuthenticationModule", () => {
+describe('AuthenticationModule', () => {
   let httpMock: jest.Mocked<Http>;
   let authModule: AuthenticationModule;
 
@@ -15,21 +15,21 @@ describe("AuthenticationModule", () => {
     authModule = new AuthenticationModule(httpMock);
   });
 
-  it("Should call the login enpoint", async () => {
-    const username = "user@example.com";
-    const password = "password123";
+  it('Should call the login enpoint', async () => {
+    const username = 'user@example.com';
+    const password = 'password123';
     const mockResponse = createMockAxiosResponse(loginResponseData);
     httpMock.post.mockResolvedValue(mockResponse);
 
     const result = await authModule.login(username, password);
 
-    expect(httpMock.post).toHaveBeenCalledWith("/api/v3/tokens/create", {
+    expect(httpMock.post).toHaveBeenCalledWith('/api/v3/tokens/create', {
       username,
       password,
     });
 
     expect(httpMock.setToken).toHaveBeenCalledWith(
-      loginResponseData.data.token
+      loginResponseData.data.token,
     );
 
     expect(result).toEqual(loginResponseData);

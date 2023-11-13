@@ -1,9 +1,9 @@
 export const paymentParticipantData = {
   success: true,
-  message: "Sucesso",
+  message: 'Sucesso',
   data: {
-    name: "foo bar",
-    document: "88265592000114",
+    name: 'foo bar',
+    document: '88265592000114',
     status: true,
     settings: {
       fee_split_enabled: false,
