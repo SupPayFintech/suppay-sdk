@@ -112,4 +112,71 @@ describe("Http", () => {
       "No authentication token available"
     );
   });
+
+  it("should include Authorization header for Bearer auth", async () => {
+    http.setToken("bearer-token", "Bearer");
+    http.auth(true);
+    mockGet.mockResolvedValue({ data: "response" });
+
+    await http.get("http://example.com");
+
+    expect(mockGet).toHaveBeenCalledWith("http://example.com", {
+      headers: {
+        Authorization: "Bearer bearer-token",
+      },
+    });
+  });
+
+  it("should include x-auth-application header for Application auth", async () => {
+    http.setApplicationAuth("app-token");
+    http.auth(true);
+    mockGet.mockResolvedValue({ data: "response" });
+
+    await http.get("http://example.com");
+
+    expect(mockGet).toHaveBeenCalledWith("http://example.com", {
+      headers: {
+        "x-auth-application": "app-token",
+      },
+    });
+  });
+
+  it("should not mix auth headers when switching auth types", async () => {
+    http.setToken("bearer-token", "Bearer");
+    http.auth(true);
+    mockGet.mockResolvedValueOnce({ data: "response" });
+
+    await http.get("http://example.com");
+
+    http.setApplicationAuth("app-token");
+    mockGet.mockResolvedValueOnce({ data: "response" });
+
+    await http.get("http://example.com");
+
+    expect(mockGet).toHaveBeenNthCalledWith(1, "http://example.com", {
+      headers: {
+        Authorization: "Bearer bearer-token",
+      },
+    });
+
+    expect(mockGet).toHaveBeenNthCalledWith(2, "http://example.com", {
+      headers: {
+        "x-auth-application": "app-token",
+      },
+    });
+  });
+
+  it("should default to Bearer auth when auth type is not specified", async () => {
+    http.setToken("default-token");
+    http.auth(true);
+    mockGet.mockResolvedValue({ data: "response" });
+
+    await http.get("http://example.com");
+
+    expect(mockGet).toHaveBeenCalledWith("http://example.com", {
+      headers: {
+        Authorization: "Bearer default-token",
+      },
+    });
+  });
 });
