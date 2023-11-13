@@ -9,7 +9,10 @@ export default class Http extends MiddlewareManager {
 
   constructor(axiosConfig?: AxiosRequestConfig, token?: string) {
     super();
-    this.axiosInstance = axios.create(axiosConfig);
+    this.axiosInstance = axios.create({
+      ...axiosConfig,
+      headers: { 'Content-Type': 'application/json' },
+    });
     this.authToken = token;
   }
 
