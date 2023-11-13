@@ -8,11 +8,11 @@ jest.mock('../../Http');
 
 describe('AuthenticationModule', () => {
   let httpMock: jest.Mocked<Http>;
-  let authModule: AuthenticationModule;
+  let authenticationModule: AuthenticationModule;
 
   beforeEach(() => {
     httpMock = new Http() as jest.Mocked<Http>;
-    authModule = new AuthenticationModule(httpMock);
+    authenticationModule = new AuthenticationModule(httpMock);
   });
 
   it('Should call the login enpoint', async () => {
@@ -21,7 +21,7 @@ describe('AuthenticationModule', () => {
     const mockResponse = createMockAxiosResponse(loginResponseData);
     httpMock.post.mockResolvedValue(mockResponse);
 
-    const result = await authModule.login(username, password);
+    const result = await authenticationModule.login(username, password);
 
     expect(httpMock.post).toHaveBeenCalledWith('/api/v3/tokens/create', {
       username,

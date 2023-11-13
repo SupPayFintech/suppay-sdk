@@ -20,11 +20,11 @@ jest.mock('../../Http');
 
 describe('PaymentModule', () => {
   let httpMock: jest.Mocked<Http>;
-  let authModule: PaymentModule;
+  let paymentModule: PaymentModule;
 
   beforeEach(() => {
     httpMock = new Http() as jest.Mocked<Http>;
-    authModule = new PaymentModule(httpMock);
+    paymentModule = new PaymentModule(httpMock);
   });
 
   it('Should call the payment creation API', async () => {
@@ -48,7 +48,7 @@ describe('PaymentModule', () => {
 
     httpMock.post.mockResolvedValue(mockResponse);
 
-    const result = await authModule.create(body);
+    const result = await paymentModule.create(body);
 
     expect(httpMock.auth).toHaveBeenCalledWith(true);
 
@@ -69,7 +69,7 @@ describe('PaymentModule', () => {
 
     httpMock.get.mockResolvedValue(mockResponse);
 
-    const result = await authModule.all(search, page, orderBy, perPage);
+    const result = await paymentModule.all(search, page, orderBy, perPage);
 
     expect(httpMock.auth).toHaveBeenCalledWith(true);
 
@@ -92,7 +92,7 @@ describe('PaymentModule', () => {
 
     httpMock.post.mockResolvedValue(mockResponse);
 
-    const result = await authModule.participant(body);
+    const result = await paymentModule.participant(body);
 
     expect(httpMock.auth).toHaveBeenCalledWith(true);
 
@@ -113,7 +113,7 @@ describe('PaymentModule', () => {
 
     httpMock.get.mockResolvedValue(mockResponse);
 
-    const result = await authModule.renotifyAuthorization(id);
+    const result = await paymentModule.renotifyAuthorization(id);
 
     expect(httpMock.auth).toHaveBeenCalledWith(true);
 
@@ -134,7 +134,7 @@ describe('PaymentModule', () => {
 
     httpMock.post.mockResolvedValue(mockResponse);
 
-    const result = await authModule.authorizeWithCode(id, code);
+    const result = await paymentModule.authorizeWithCode(id, code);
 
     expect(httpMock.auth).toHaveBeenCalledWith(true);
 
@@ -156,7 +156,7 @@ describe('PaymentModule', () => {
 
     httpMock.post.mockResolvedValue(mockResponse);
 
-    const result = await authModule.changeValue(id, value);
+    const result = await paymentModule.changeValue(id, value);
 
     expect(httpMock.auth).toHaveBeenCalledWith(true);
 
@@ -178,7 +178,7 @@ describe('PaymentModule', () => {
 
     httpMock.post.mockResolvedValue(mockResponse);
 
-    const result = await authModule.cancel(id, reason);
+    const result = await paymentModule.cancel(id, reason);
 
     expect(httpMock.auth).toHaveBeenCalledWith(true);
 
@@ -210,7 +210,7 @@ describe('PaymentModule', () => {
 
     httpMock.post.mockResolvedValue(mockResponse);
 
-    const result = await authModule.simulate(body);
+    const result = await paymentModule.simulate(body);
 
     expect(httpMock.auth).toHaveBeenCalledWith(true);
 
@@ -231,7 +231,7 @@ describe('PaymentModule', () => {
 
     httpMock.post.mockResolvedValue(mockResponse);
 
-    const result = await authModule.authorizeByCode(code);
+    const result = await paymentModule.authorizeByCode(code);
 
     expect(httpMock.auth).toHaveBeenCalledWith(true);
 
@@ -257,7 +257,7 @@ describe('PaymentModule', () => {
 
     httpMock.post.mockResolvedValue(mockResponse);
 
-    const result = await authModule.attachProof(id, type, value, amount);
+    const result = await paymentModule.attachProof(id, type, value, amount);
 
     const formData = new FormData();
     formData.append('type', type);
@@ -285,7 +285,7 @@ describe('PaymentModule', () => {
 
     httpMock.post.mockResolvedValue(mockResponse);
 
-    await expect(authModule.attachProof(id, type, value)).rejects.toThrow(
+    await expect(paymentModule.attachProof(id, type, value)).rejects.toThrow(
       'The amount attribute is mandatory for the FILE type',
     );
   });
@@ -305,7 +305,7 @@ describe('PaymentModule', () => {
 
     httpMock.auth.mockImplementation(() => httpMock);
 
-    const result = await authModule.attachProof(
+    const result = await paymentModule.attachProof(
       id,
       type,
       fileValue as File,

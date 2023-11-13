@@ -11,11 +11,11 @@ jest.mock('../../Http');
 
 describe('SupplierModule', () => {
   let httpMock: jest.Mocked<Http>;
-  let authModule: SupplierModule;
+  let supplierModule: SupplierModule;
 
   beforeEach(() => {
     httpMock = new Http() as jest.Mocked<Http>;
-    authModule = new SupplierModule(httpMock);
+    supplierModule = new SupplierModule(httpMock);
   });
 
   it('Should return the available suppliers', async () => {
@@ -28,7 +28,12 @@ describe('SupplierModule', () => {
 
     httpMock.get.mockResolvedValue(mockResponse);
 
-    const result = await authModule.available(search, page, orderBy, perPage);
+    const result = await supplierModule.available(
+      search,
+      page,
+      orderBy,
+      perPage,
+    );
 
     expect(httpMock.get).toHaveBeenCalledWith(
       `/api/v3/supplier/available?search=${search}&page=${page}&orderBy=${orderBy}&perPage=${perPage}`,
@@ -55,7 +60,7 @@ describe('SupplierModule', () => {
 
     httpMock.post.mockResolvedValue(mockResponse);
 
-    const result = await authModule.indicate(body);
+    const result = await supplierModule.indicate(body);
 
     expect(httpMock.post).toHaveBeenCalledWith(
       '/api/v3/supplier/indicate',

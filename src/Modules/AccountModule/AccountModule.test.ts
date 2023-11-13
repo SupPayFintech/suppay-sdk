@@ -11,11 +11,11 @@ jest.mock('../../Http');
 
 describe('AccountModule', () => {
   let httpMock: jest.Mocked<Http>;
-  let authModule: AccountModule;
+  let accountModule: AccountModule;
 
   beforeEach(() => {
     httpMock = new Http() as jest.Mocked<Http>;
-    authModule = new AccountModule(httpMock);
+    accountModule = new AccountModule(httpMock);
   });
 
   it('Should call the verify recovery enpoint', async () => {
@@ -23,7 +23,7 @@ describe('AccountModule', () => {
     const mockResponse = createMockAxiosResponse(recoveryVerifyData);
     httpMock.post.mockResolvedValue(mockResponse);
 
-    const result = await authModule.verifyRecovery(document);
+    const result = await accountModule.verifyRecovery(document);
 
     expect(httpMock.post).toHaveBeenCalledWith(
       '/api/v3/register/recovery/verify',
@@ -41,7 +41,7 @@ describe('AccountModule', () => {
     const mockResponse = createMockAxiosResponse(recoveryValidateData);
     httpMock.post.mockResolvedValue(mockResponse);
 
-    const result = await authModule.validateRecovery(code, document);
+    const result = await accountModule.validateRecovery(code, document);
 
     expect(httpMock.post).toHaveBeenCalledWith(
       '/api/v3/register/recovery/validate',
@@ -62,7 +62,7 @@ describe('AccountModule', () => {
     const mockResponse = createMockAxiosResponse(ApiResponseEmpty);
     httpMock.post.mockResolvedValue(mockResponse);
 
-    const result = await authModule.resetPassword(
+    const result = await accountModule.resetPassword(
       identifier,
       password,
       passwordConfirmation,
@@ -87,7 +87,7 @@ describe('AccountModule', () => {
 
     httpMock.get.mockResolvedValue(mockResponse);
 
-    const result = await authModule.context();
+    const result = await accountModule.context();
 
     expect(httpMock.auth).toHaveBeenCalledWith(true);
 
