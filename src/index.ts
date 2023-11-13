@@ -4,6 +4,7 @@ import { AuthenticationModule } from './Modules/AuthenticationModule';
 import { AxiosRequestConfig } from 'axios';
 import { SupplierModule } from './Modules/SupplierModule';
 import { PaymentModule } from './Modules/PaymentModule';
+import { RegisterModule } from './Modules/RegisterModule';
 
 /**
  * SupPayClient
@@ -15,6 +16,7 @@ import { PaymentModule } from './Modules/PaymentModule';
  * @property {AccountModule} account - The Account module for account management operations.
  * @property {SupplierModule} supplier - The Supplier module for supplier-related operations.
  * @property {PaymentModule} payment - The Payment module for handling payment transactions.
+ * @property {RegisterModule} payment - The Register module for handling registration requests.
  */
 class SupPayClient {
   private http: Http;
@@ -23,6 +25,7 @@ class SupPayClient {
   public readonly account: AccountModule;
   public readonly supplier: SupplierModule;
   public readonly payment: PaymentModule;
+  public readonly register: RegisterModule;
 
   /**
    * Creates an instance of SupPayClient.
@@ -38,6 +41,7 @@ class SupPayClient {
     this.account = new AccountModule(this.http);
     this.supplier = new SupplierModule(this.http);
     this.payment = new PaymentModule(this.http);
+    this.register = new RegisterModule(this.http);
   }
 
   /**
