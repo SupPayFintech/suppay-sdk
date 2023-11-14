@@ -7,7 +7,7 @@ export interface VerifyMobileCodeData {
 }
 
 export interface AttachPictureData {
-  AttachPictureData: string;
+  identifier: string;
 }
 
 export enum RegisterDocumentType {
