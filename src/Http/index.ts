@@ -6,6 +6,7 @@ export default class Http extends MiddlewareManager {
   private useAuth: boolean = false;
   private authToken: string | undefined;
   private authType: 'Bearer' | 'Application' = 'Bearer';
+  private authCallback?: () => string;
 
   constructor(axiosConfig?: AxiosRequestConfig, token?: string) {
     super();
@@ -14,6 +15,10 @@ export default class Http extends MiddlewareManager {
       headers: { 'Content-Type': 'application/json' },
     });
     this.authToken = token;
+  }
+
+  setAuthCallback(callback: () => string): void {
+    this.authCallback = callback;
   }
 
   auth(useAuth: boolean = false): Http {
@@ -36,11 +41,15 @@ export default class Http extends MiddlewareManager {
   }
 
   private getConfig(config?: AxiosRequestConfig): AxiosRequestConfig {
-    if (this.useAuth && this.authToken) {
+    const callbackToken = this.authCallback ? this.authCallback() : undefined;
+
+    const token = callbackToken || this.authToken;
+
+    if (this.useAuth && token) {
       const authHeader =
         this.authType === 'Bearer'
-          ? { Authorization: `Bearer ${this.authToken}` }
-          : { 'x-auth-application': this.authToken };
+          ? { Authorization: `Bearer ${token}` }
+          : { 'x-auth-application': token };
 
       return {
         ...config,

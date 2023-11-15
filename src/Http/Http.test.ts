@@ -6,6 +6,7 @@ describe('Http', () => {
   let mockPost: jest.Mock;
   let mockPut: jest.Mock;
   let mockDelete: jest.Mock;
+  let tokenGenerator: jest.Mock;
 
   beforeEach(() => {
     http = new Http({}, 'token');
@@ -19,6 +20,32 @@ describe('Http', () => {
     http.axiosInstance.post = mockPost;
     http.axiosInstance.put = mockPut;
     http.axiosInstance.delete = mockDelete;
+
+    tokenGenerator = jest.fn();
+    http.setAuthCallback(tokenGenerator);
+  });
+
+  it('should obtain token from auth callback', async () => {
+    tokenGenerator.mockReturnValue('callback-token');
+    http.auth(true);
+
+    await http.get('http://example.com');
+
+    expect(tokenGenerator).toHaveBeenCalled();
+  });
+
+  it('should use token from auth callback in request headers', async () => {
+    tokenGenerator.mockReturnValue('callback-token');
+    http.auth(true);
+    mockGet.mockResolvedValue({ data: 'response' });
+
+    await http.get('http://example.com');
+
+    expect(mockGet).toHaveBeenCalledWith('http://example.com', {
+      headers: {
+        Authorization: 'Bearer callback-token',
+      },
+    });
   });
 
   it('should make a GET request', async () => {
@@ -43,6 +70,42 @@ describe('Http', () => {
       expect.any(Object),
     );
     expect(response.data).toBe('test');
+  });
+
+  it('should dynamically update token from auth callback', async () => {
+    tokenGenerator
+      .mockReturnValueOnce('callback-token-1')
+      .mockReturnValueOnce('callback-token-2');
+    http.auth(true);
+
+    await http.get('http://example.com');
+    await http.get('http://example.com');
+
+    expect(mockGet).toHaveBeenNthCalledWith(1, 'http://example.com', {
+      headers: {
+        Authorization: 'Bearer callback-token-1',
+      },
+    });
+
+    expect(mockGet).toHaveBeenNthCalledWith(2, 'http://example.com', {
+      headers: {
+        Authorization: 'Bearer callback-token-2',
+      },
+    });
+  });
+
+  it('should prefer callback token over static token', async () => {
+    http.setToken('static-token');
+    tokenGenerator.mockReturnValue('callback-token');
+    http.auth(true);
+
+    await http.get('http://example.com');
+
+    expect(mockGet).toHaveBeenCalledWith('http://example.com', {
+      headers: {
+        Authorization: 'Bearer callback-token',
+      },
+    });
   });
 
   it('should make a PUT request', async () => {

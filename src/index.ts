@@ -53,6 +53,17 @@ class SupPayClient {
   setToken(token: string): void {
     this.http.setToken(token);
   }
+
+  /**
+   * Configures an authentication callback to be used for obtaining the authentication token.
+   * The token obtained through the callback will be used for HTTP requests.
+   *
+   * @param {() => string} authCallback - The callback that returns the authentication token.
+   * @returns {void}
+   */
+  setAuthCallback(authCallback: () => string): void {
+    this.http.setAuthCallback(authCallback);
+  }
 }
 
 export default SupPayClient;
