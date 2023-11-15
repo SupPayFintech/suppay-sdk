@@ -1,3 +1,4 @@
+import { SupplierSetting } from '../AuthenticationModule/AuthenticationModule.type';
 import {
   FilePaymentProof,
   InvoicePaymentProof,
@@ -101,12 +102,7 @@ export interface PaymentParticipantData {
   name: string;
   document: string;
   status: boolean;
-  settings?: {
-    fee_split_enabled: boolean;
-    custom_balance_period_enabled: boolean;
-    max_balance_period: number;
-    custom_fee_enabled: boolean;
-  };
+  settings?: SupplierSetting;
 }
 
 export interface PaymentSimulateInstallmentData {

@@ -10,6 +10,7 @@ export const paymentParticipantData = {
       custom_balance_period_enabled: false,
       max_balance_period: 5,
       custom_fee_enabled: false,
+      calendar_limit: 0,
     },
   },
 };
