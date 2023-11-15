@@ -22,7 +22,7 @@ export default class Http extends MiddlewareManager {
   }
 
   auth(useAuth: boolean = false): Http {
-    if (useAuth && !this.authToken) {
+    if (useAuth && !this.getToken()) {
       throw new Error('No authentication token available');
     }
 
@@ -41,9 +41,7 @@ export default class Http extends MiddlewareManager {
   }
 
   private getConfig(config?: AxiosRequestConfig): AxiosRequestConfig {
-    const callbackToken = this.authCallback ? this.authCallback() : undefined;
-
-    const token = callbackToken || this.authToken;
+    const token = this.getToken();
 
     if (this.useAuth && token) {
       const authHeader =
@@ -60,6 +58,12 @@ export default class Http extends MiddlewareManager {
       };
     }
     return config || {};
+  }
+
+  private getToken(): string | undefined {
+    const callbackToken = this.authCallback ? this.authCallback() : undefined;
+
+    return callbackToken || this.authToken;
   }
 
   async get<T = any>(

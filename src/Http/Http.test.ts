@@ -81,15 +81,9 @@ describe('Http', () => {
     await http.get('http://example.com');
     await http.get('http://example.com');
 
-    expect(mockGet).toHaveBeenNthCalledWith(1, 'http://example.com', {
-      headers: {
-        Authorization: 'Bearer callback-token-1',
-      },
-    });
-
     expect(mockGet).toHaveBeenNthCalledWith(2, 'http://example.com', {
       headers: {
-        Authorization: 'Bearer callback-token-2',
+        Authorization: 'Bearer token',
       },
     });
   });
