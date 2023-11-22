@@ -1,9 +1,9 @@
 import axios, { AxiosInstance, AxiosRequestConfig, AxiosResponse } from 'axios';
-import { MiddlewareManager } from './MiddlewareManager';
 import Yup from '../Helper/Yup';
 import { AnyObject, Maybe } from 'yup';
+import { handleAxiosError } from '../Helper/errorHandler';
 
-export default class Http extends MiddlewareManager {
+export default class Http {
   public readonly axiosInstance: AxiosInstance;
   private useAuth: boolean = false;
   private authToken: string | undefined;
@@ -11,11 +11,19 @@ export default class Http extends MiddlewareManager {
   private authCallback?: () => string;
 
   constructor(axiosConfig?: AxiosRequestConfig, token?: string) {
-    super();
     this.axiosInstance = axios.create({
       ...axiosConfig,
       headers: { 'Content-Type': 'application/json' },
     });
+
+    this.axiosInstance.interceptors.response.use(
+      (response) => response,
+      (error) => {
+        const transformedError = handleAxiosError(error);
+        return Promise.reject(transformedError);
+      },
+    );
+
     this.authToken = token;
   }
 
