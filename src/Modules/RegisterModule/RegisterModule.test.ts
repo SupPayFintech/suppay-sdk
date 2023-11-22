@@ -96,7 +96,7 @@ describe('RegisterModule', () => {
     formData.append('file', file);
     formData.append('type', type);
 
-    const result = await registerModule.attachPicture(type, file as File);
+    const result = await registerModule.attachPicture(type, file as any);
 
     expect(httpMock.post).toHaveBeenCalledWith(
       `/api/v3/register/verification/files/attach`,

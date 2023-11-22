@@ -2,14 +2,11 @@ import Yup from '../../Helper/Yup';
 
 export const loginSchema = Yup.object().shape({
   username: Yup.string()
-    .CPFOrCNPJ('O nome de usuário deve ser um CPF ou CNPJ válido')
-    .required('Nome de usuário é obrigatório'),
+    .CPFOrCNPJ('O documento deve ser um CPF ou CNPJ válido')
+    .required('Documento é obrigatório'),
 
   password: Yup.string()
-    .required('Senha é obrigatória')
     .min(8, 'A senha deve ter pelo menos 8 caracteres')
-    .matches(
-      /^(?=.*[A-Za-z])(?=.*\d)[A-Za-z\d]{8,}$/,
-      'A senha deve conter pelo menos uma letra e um número',
-    ),
+    .max(16, 'A senha não pode ter mais de 16 caracteres')
+    .required('Senha é obrigatória'),
 });

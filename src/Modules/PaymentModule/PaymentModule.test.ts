@@ -348,7 +348,7 @@ describe('PaymentModule', () => {
     const result = await paymentModule.attachProof(
       id,
       type,
-      fileValue as File,
+      fileValue as any,
       amount,
     );
 

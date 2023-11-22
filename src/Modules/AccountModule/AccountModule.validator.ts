@@ -3,8 +3,10 @@ import Yup from '../../Helper/Yup';
 export const resetPasswordSchema = Yup.object().shape({
   identifier: Yup.string().required('O campo de identificação é obrigatório'),
   password: Yup.string()
-    .min(8, 'A senha deve conter pelo menos 8 caracteres')
+    .min(8, 'A senha deve ter pelo menos 8 caracteres')
+    .max(16, 'A senha não pode ter mais de 16 caracteres')
     .required('O campo de senha é obrigatório'),
+
   passwordConfirmation: Yup.string()
     .oneOf([Yup.ref('password')], 'As senhas não correspondem')
     .required('A confirmação de senha é obrigatória'),
