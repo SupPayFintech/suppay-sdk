@@ -6,6 +6,11 @@ import {
   RecoveryVerifyData,
   UserContextData,
 } from './AccountModule.type';
+import {
+  resetPasswordSchema,
+  validateRecoverySchema,
+  verifyRecoverySchema,
+} from './AccountModule.validator';
 
 export type RecoveryVerifyResponse = ApiResponse<RecoveryVerifyData>;
 export type RecoveryValidationResponse = ApiResponse<RecoveryValidationData>;
@@ -48,6 +53,7 @@ export class AccountModule {
       '/api/v3/register/recovery/verify',
       { document },
       { signal },
+      verifyRecoverySchema,
     );
     return response.data;
   }
@@ -71,6 +77,7 @@ export class AccountModule {
       '/api/v3/register/recovery/validate',
       { code, document },
       { signal },
+      validateRecoverySchema,
     );
     return response.data;
   }
@@ -100,6 +107,7 @@ export class AccountModule {
         password_confirmation: passwordConfirmation,
       },
       { signal },
+      resetPasswordSchema,
     );
     return response.data;
   }

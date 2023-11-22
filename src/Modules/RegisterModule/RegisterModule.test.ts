@@ -132,6 +132,7 @@ describe('RegisterModule', () => {
       {
         signal: undefined,
       },
+      expect.anything(),
     );
 
     expect(result).toEqual(ApiResponseEmpty);
@@ -209,6 +210,7 @@ describe('RegisterModule', () => {
       {
         signal: undefined,
       },
+      expect.anything(),
     );
 
     expect(result).toEqual(ApiResponseEmpty);

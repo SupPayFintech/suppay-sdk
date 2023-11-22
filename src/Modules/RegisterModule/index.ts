@@ -17,6 +17,10 @@ import {
   RegisterDocumentType,
   VerifyMobileCodeData,
 } from './RegisterModule.type';
+import {
+  approveRegisterDataSchema,
+  createRegisterDataSchema,
+} from './RegisterModule.validator';
 
 export type DocumentAvailableResponse = ApiResponse<DocumentAvailableData>;
 export type SendMobileCodeResponse = ApiResponse;
@@ -162,6 +166,7 @@ export class RegisterModule {
       `/api/v3/register/commercial-establishment`,
       body,
       { signal },
+      createRegisterDataSchema,
     );
 
     return response.data;
@@ -236,6 +241,7 @@ export class RegisterModule {
         `/api/v3/register/commercial-establishment/${id}/approve`,
         body,
         { signal },
+        approveRegisterDataSchema,
       );
 
     return response.data;

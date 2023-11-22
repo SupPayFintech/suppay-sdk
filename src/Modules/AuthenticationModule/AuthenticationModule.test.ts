@@ -30,6 +30,7 @@ describe('AuthenticationModule', () => {
         password,
       },
       { signal: undefined },
+      expect.anything(),
     ),
       expect(httpMock.setToken).toHaveBeenCalledWith(
         loginResponseData.data.token,

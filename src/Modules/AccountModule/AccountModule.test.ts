@@ -6,6 +6,7 @@ import { recoveryVerifyData } from './fixtures/response-recovery-verify';
 import { recoveryValidateData } from './fixtures/response-recovery-validate';
 import { ApiResponseEmpty } from '../fixtures/response-api-empty';
 import { userContextData } from './fixtures/response-user-context';
+import exp = require('constants');
 
 jest.mock('../../Http');
 
@@ -31,6 +32,7 @@ describe('AccountModule', () => {
         document: '123456789',
       },
       { signal: undefined },
+      expect.anything(),
     );
 
     expect(result).toEqual(recoveryVerifyData);
@@ -51,6 +53,7 @@ describe('AccountModule', () => {
         document: '123456789',
       },
       { signal: undefined },
+      expect.anything(),
     );
 
     expect(result).toEqual(recoveryValidateData);
@@ -78,6 +81,7 @@ describe('AccountModule', () => {
         password_confirmation: 'example-1234',
       },
       { signal: undefined },
+      expect.anything(),
     );
 
     expect(result).toEqual(ApiResponseEmpty);

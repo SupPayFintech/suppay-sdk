@@ -16,6 +16,14 @@ import {
   PaymentSimulateData,
 } from './PaymentInterfaces.type';
 import { PaymentProofType } from './PaymentTypes.type';
+import {
+  authorizeSchema,
+  cancelSchema,
+  changeValueSchema,
+  createSchema,
+  participantSchema,
+  simulateSchema,
+} from './PaymentModule.validator';
 
 export type PaymentCreateResponse = ApiResponse<PaymentData>;
 export type PaymentAllResponse = ApiResponsePaginate<PaymentData>;
@@ -64,7 +72,12 @@ export class PaymentModule {
   ): Promise<PaymentCreateResponse> {
     const response = await this.http
       .auth(true)
-      .post<PaymentCreateResponse>(`/api/v3/payment/create`, body, { signal });
+      .post<PaymentCreateResponse>(
+        `/api/v3/payment/create`,
+        body,
+        { signal },
+        createSchema,
+      );
 
     return response.data;
   }
@@ -112,9 +125,14 @@ export class PaymentModule {
   ): Promise<PaymentParticipantResponse> {
     const response = await this.http
       .auth(true)
-      .post<PaymentParticipantResponse>(`/api/v3/payment/participant`, body, {
-        signal,
-      });
+      .post<PaymentParticipantResponse>(
+        `/api/v3/payment/participant`,
+        body,
+        {
+          signal,
+        },
+        participantSchema,
+      );
 
     return response.data;
   }
@@ -165,6 +183,7 @@ export class PaymentModule {
           code,
         },
         { signal },
+        authorizeSchema,
       );
 
     return response.data;
@@ -193,6 +212,7 @@ export class PaymentModule {
           value,
         },
         { signal },
+        changeValueSchema,
       );
 
     return response.data;
@@ -219,6 +239,7 @@ export class PaymentModule {
         reason,
       },
       { signal },
+      cancelSchema,
     );
 
     return response.data;
@@ -237,11 +258,14 @@ export class PaymentModule {
     body: PaymentCreateSimulate,
     signal?: GenericAbortSignal,
   ): Promise<PaymentSimulateResponse> {
-    const response = await this.http
-      .auth(true)
-      .post<PaymentSimulateResponse>(`/api/v3/payment/simulate`, body, {
+    const response = await this.http.auth(true).post<PaymentSimulateResponse>(
+      `/api/v3/payment/simulate`,
+      body,
+      {
         signal,
-      });
+      },
+      simulateSchema,
+    );
 
     return response.data;
   }
@@ -265,6 +289,7 @@ export class PaymentModule {
         `/api/v3/authorization/execute/with-code`,
         { code },
         { signal },
+        authorizeSchema,
       );
 
     return response.data;
@@ -306,9 +331,7 @@ export class PaymentModule {
 
       formData.append('file', value);
       formData.append('value', amount.toString());
-    }
-
-    if (PaymentProofType.INVOICE === type) {
+    } else if (PaymentProofType.INVOICE === type) {
       formData.append('key', value);
     }
 

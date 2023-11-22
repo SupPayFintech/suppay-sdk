@@ -71,6 +71,7 @@ describe('SupplierModule', () => {
       {
         signal: undefined,
       },
+      expect.anything(),
     );
 
     expect(result).toEqual(avaliableData);

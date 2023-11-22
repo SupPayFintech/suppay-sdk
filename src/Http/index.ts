@@ -1,5 +1,7 @@
 import axios, { AxiosInstance, AxiosRequestConfig, AxiosResponse } from 'axios';
 import { MiddlewareManager } from './MiddlewareManager';
+import Yup from '../Helper/Yup';
+import { AnyObject, Maybe } from 'yup';
 
 export default class Http extends MiddlewareManager {
   public readonly axiosInstance: AxiosInstance;
@@ -27,6 +29,15 @@ export default class Http extends MiddlewareManager {
     }
 
     this.useAuth = useAuth;
+
+    return this;
+  }
+
+  private async validate<T extends Maybe<AnyObject> = any>(
+    data: T,
+    validationSchema: Yup.ObjectSchema<T>,
+  ) {
+    await validationSchema.validate(data, { abortEarly: false });
 
     return this;
   }
@@ -73,19 +84,29 @@ export default class Http extends MiddlewareManager {
     return this.axiosInstance.get<T>(url, this.getConfig(config));
   }
 
-  async post<T = any>(
+  async post<T = any, S extends Maybe<AnyObject> = any>(
     url: string,
     data?: any,
     config?: AxiosRequestConfig,
+    validationSchema?: Yup.ObjectSchema<S>,
   ): Promise<AxiosResponse<T>> {
+    if (validationSchema) {
+      await this.validate(data, validationSchema);
+    }
+
     return this.axiosInstance.post<T>(url, data, this.getConfig(config));
   }
 
-  async put<T = any>(
+  async put<T = any, S extends Maybe<AnyObject> = any>(
     url: string,
     data?: any,
     config?: AxiosRequestConfig,
+    validationSchema?: Yup.ObjectSchema<S>,
   ): Promise<AxiosResponse<T>> {
+    if (validationSchema) {
+      await this.validate(data, validationSchema);
+    }
+
     return this.axiosInstance.put<T>(url, data, this.getConfig(config));
   }
 
