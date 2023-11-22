@@ -6,7 +6,6 @@ import { recoveryVerifyData } from './fixtures/response-recovery-verify';
 import { recoveryValidateData } from './fixtures/response-recovery-validate';
 import { ApiResponseEmpty } from '../fixtures/response-api-empty';
 import { userContextData } from './fixtures/response-user-context';
-import exp = require('constants');
 
 jest.mock('../../Http');
 
