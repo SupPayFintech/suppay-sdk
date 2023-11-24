@@ -59,11 +59,19 @@ export const participantSchema = Yup.object()
   })
   .test(
     'at-least-one-field',
-    'Ao menos um dos documentos (fornecedor ou estabelecimento comercial) deve ser fornecido',
+    'Pelo menos um dos documentos (fornecedor ou estabelecimento comercial) deve ser fornecido',
     function (object) {
-      return !!(
-        object.supplier_document || object.commercial_establishment_document
-      );
+      const { supplier_document, commercial_establishment_document } = object;
+
+      if (!supplier_document && !commercial_establishment_document) {
+        return this.createError({
+          path: 'supplier_document', // Pode ser qualquer campo que você deseje marcar com o erro
+          message:
+            'Pelo menos um dos documentos (fornecedor ou estabelecimento comercial) deve ser fornecido',
+        });
+      }
+
+      return true;
     },
   );
 
