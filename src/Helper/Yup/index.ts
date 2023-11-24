@@ -7,6 +7,7 @@ Yup.setLocale(PT);
 Yup.addMethod(Yup.string, 'cpf', function (message) {
   return this.test('cpf', message, function (value) {
     const { path, createError } = this;
+    if (!value) return true;
     return (value && isValidCPF(value)) || createError({ path, message });
   });
 });
@@ -14,6 +15,7 @@ Yup.addMethod(Yup.string, 'cpf', function (message) {
 Yup.addMethod(Yup.string, 'cnpj', function (message) {
   return this.test('cnpj', message, function (value) {
     const { path, createError } = this;
+    if (!value) return true;
     return (value && isValidCNPJ(value)) || createError({ path, message });
   });
 });
@@ -21,6 +23,7 @@ Yup.addMethod(Yup.string, 'cnpj', function (message) {
 Yup.addMethod(Yup.string, 'CPFOrCNPJ', function (message) {
   return this.test('CPFOrCNPJ', message, function (value) {
     const { path, createError } = this;
+    if (!value) return true;
     return (value && isValidCPFOrCNPJ(value)) || createError({ path, message });
   });
 });
