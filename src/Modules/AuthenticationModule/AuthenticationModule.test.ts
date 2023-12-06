@@ -30,10 +30,11 @@ describe('AuthenticationModule', () => {
         password,
       },
       { signal: undefined },
-    ),
-      expect(httpMock.setToken).toHaveBeenCalledWith(
-        loginResponseData.data.token,
-      );
+    );
+
+    expect(httpMock.setToken).toHaveBeenCalledWith(
+      loginResponseData.data.token,
+    );
 
     expect(result).toEqual(loginResponseData);
   });
