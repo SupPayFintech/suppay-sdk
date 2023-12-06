@@ -31,7 +31,6 @@ describe('AccountModule', () => {
         document: '123456789',
       },
       { signal: undefined },
-      expect.anything(),
     );
 
     expect(result).toEqual(recoveryVerifyData);
@@ -52,7 +51,6 @@ describe('AccountModule', () => {
         document: '123456789',
       },
       { signal: undefined },
-      expect.anything(),
     );
 
     expect(result).toEqual(recoveryValidateData);
@@ -80,7 +78,6 @@ describe('AccountModule', () => {
         password_confirmation: 'example-1234',
       },
       { signal: undefined },
-      expect.anything(),
     );
 
     expect(result).toEqual(ApiResponseEmpty);

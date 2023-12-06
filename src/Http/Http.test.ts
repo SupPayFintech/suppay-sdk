@@ -1,5 +1,4 @@
 import Http from './index';
-import Yup from '../Helper/Yup';
 
 describe('Http', () => {
   let http: Http;
@@ -10,9 +9,6 @@ describe('Http', () => {
   let tokenGenerator: jest.Mock;
 
   const validData = { key: 'value' };
-  const validationSchema = Yup.object().shape({
-    key: Yup.string().required(),
-  });
 
   beforeEach(() => {
     http = new Http({}, 'token');
@@ -34,12 +30,7 @@ describe('Http', () => {
   it('should successfully validate data for POST request', async () => {
     mockPost.mockResolvedValue({ data: 'test' });
 
-    const response = await http.post(
-      'http://example.com',
-      validData,
-      {},
-      validationSchema,
-    );
+    const response = await http.post('http://example.com', validData, {});
     expect(mockPost).toHaveBeenCalledWith(
       'http://example.com',
       validData,
@@ -48,21 +39,10 @@ describe('Http', () => {
     expect(response.data).toBe('test');
   });
 
-  it('should throw validation error for invalid data in POST request', async () => {
-    await expect(
-      http.post('http://example.com', {}, {}, validationSchema),
-    ).rejects.toThrow(Yup.ValidationError);
-  });
-
   it('should successfully validate data for PUT request', async () => {
     mockPut.mockResolvedValue({ data: 'test' });
 
-    const response = await http.put(
-      'http://example.com',
-      validData,
-      {},
-      validationSchema,
-    );
+    const response = await http.put('http://example.com', validData, {});
 
     expect(mockPut).toHaveBeenCalledWith(
       'http://example.com',
@@ -70,12 +50,6 @@ describe('Http', () => {
       expect.any(Object),
     );
     expect(response.data).toBe('test');
-  });
-
-  it('should throw validation error for invalid data in PUT request', async () => {
-    await expect(
-      http.put('http://example.com', {}, {}, validationSchema),
-    ).rejects.toThrow(Yup.ValidationError);
   });
 
   it('should proceed with POST request without validation schema', async () => {

@@ -2,7 +2,6 @@ import { GenericAbortSignal } from 'axios';
 import Http from '../../Http';
 import { ApiResponse } from '../../SupPayClient.type';
 import { LoginData } from './AuthenticationModule.type';
-import { loginSchema } from './AuthenticationModule.validator';
 
 export type LoginResponse = ApiResponse<LoginData>;
 
@@ -46,7 +45,6 @@ export class AuthenticationModule {
       '/api/v3/tokens/create',
       { username, password },
       { signal },
-      loginSchema,
     );
 
     if (response.data.success && response.data.data?.token) {

@@ -52,14 +52,9 @@ describe('PaymentModule', () => {
 
     expect(httpMock.auth).toHaveBeenCalledWith(true);
 
-    expect(httpMock.post).toHaveBeenCalledWith(
-      '/api/v3/payment/create',
-      body,
-      {
-        signal: undefined,
-      },
-      expect.anything(),
-    );
+    expect(httpMock.post).toHaveBeenCalledWith('/api/v3/payment/create', body, {
+      signal: undefined,
+    });
 
     expect(result).toEqual(paymentCreateData);
   });
@@ -112,7 +107,6 @@ describe('PaymentModule', () => {
       {
         signal: undefined,
       },
-      expect.anything(),
     );
 
     expect(result).toEqual(paymentParticipantData);
@@ -161,7 +155,6 @@ describe('PaymentModule', () => {
       {
         signal: undefined,
       },
-      expect.anything(),
     );
 
     expect(result).toEqual(ApiResponseEmpty);
@@ -187,7 +180,6 @@ describe('PaymentModule', () => {
       {
         signal: undefined,
       },
-      expect.anything(),
     );
 
     expect(result).toEqual(ApiResponseEmpty);
@@ -215,7 +207,6 @@ describe('PaymentModule', () => {
       {
         signal: undefined,
       },
-      expect.anything(),
     );
 
     expect(result).toEqual(ApiResponseEmpty);
@@ -252,7 +243,6 @@ describe('PaymentModule', () => {
       {
         signal: undefined,
       },
-      expect.anything(),
     );
 
     expect(result).toEqual(paymentSimulateData);
@@ -279,7 +269,6 @@ describe('PaymentModule', () => {
       {
         signal: undefined,
       },
-      expect.anything(),
     );
 
     expect(result).toEqual(paymentCreateData);

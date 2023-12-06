@@ -12,7 +12,6 @@ import {
   SupplierAvailableData,
   SupplierIndicateCreate,
 } from './SupplierModule.type';
-import { supplierIndicateCreateSchema } from './SupplierModule.validator';
 
 export type SupplierAvailableResponse =
   ApiResponsePaginate<SupplierAvailableData>;
@@ -87,7 +86,6 @@ export class SupplierModule {
       `/api/v3/supplier/indicate`,
       body,
       { signal },
-      supplierIndicateCreateSchema,
     );
 
     return response.data;

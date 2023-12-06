@@ -1,6 +1,4 @@
 import axios, { AxiosInstance, AxiosRequestConfig, AxiosResponse } from 'axios';
-import Yup from '../Helper/Yup';
-import { AnyObject, Maybe } from 'yup';
 import { handleAxiosError } from '../Helper/errorHandler';
 
 export default class Http {
@@ -37,15 +35,6 @@ export default class Http {
     }
 
     this.useAuth = useAuth;
-
-    return this;
-  }
-
-  private async validate<T extends Maybe<AnyObject> = any>(
-    data: T,
-    validationSchema: Yup.ObjectSchema<T>,
-  ) {
-    await validationSchema.validate(data, { abortEarly: false });
 
     return this;
   }
@@ -92,29 +81,19 @@ export default class Http {
     return this.axiosInstance.get<T>(url, this.getConfig(config));
   }
 
-  async post<T = any, S extends Maybe<AnyObject> = any>(
+  async post<T = any>(
     url: string,
     data?: any,
     config?: AxiosRequestConfig,
-    validationSchema?: Yup.ObjectSchema<S>,
   ): Promise<AxiosResponse<T>> {
-    if (validationSchema) {
-      await this.validate(data, validationSchema);
-    }
-
     return this.axiosInstance.post<T>(url, data, this.getConfig(config));
   }
 
-  async put<T = any, S extends Maybe<AnyObject> = any>(
+  async put<T = any>(
     url: string,
     data?: any,
     config?: AxiosRequestConfig,
-    validationSchema?: Yup.ObjectSchema<S>,
   ): Promise<AxiosResponse<T>> {
-    if (validationSchema) {
-      await this.validate(data, validationSchema);
-    }
-
     return this.axiosInstance.put<T>(url, data, this.getConfig(config));
   }
 
