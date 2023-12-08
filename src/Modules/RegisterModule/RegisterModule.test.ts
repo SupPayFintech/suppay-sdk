@@ -86,7 +86,7 @@ describe('RegisterModule', () => {
 
     httpMock.post.mockResolvedValue(mockResponse);
 
-    const type = RegisterDocumentType.DOCUMENT_BACK;
+    const type = RegisterDocumentType.CNH;
     const file = new Blob(['dummy content'], { type: 'text/plain' });
     Object.defineProperty(file, 'name', {
       value: 'test.txt',
@@ -114,7 +114,7 @@ describe('RegisterModule', () => {
       password: 'foo-bar-password',
       password_confirmation: 'foo-bar-password',
       documents: {
-        document_type: RegisterDocumentType.DOCUMENT_BACK,
+        document_type: RegisterDocumentType.CNH,
         document_front: 'c3e23809-72f3-4cd8-bdd0-132c077bd978',
         document_back: '32171293-7127-49b5-96b3-c6c4098d840c',
         selfie: '77d3b643-7a86-4f07-b0e0-6628453a62da',

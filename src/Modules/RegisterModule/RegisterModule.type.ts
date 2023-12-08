@@ -11,9 +11,10 @@ export interface AttachPictureData {
 }
 
 export enum RegisterDocumentType {
-  DOCUMENT_FRONT = 'document_front',
-  DOCUMENT_BACK = 'document_back',
-  SELFIE = 'selfie',
+  CNH = 'cnh',
+  RNE = 'rne',
+  RG = 'rg',
+  OTHER = 'other',
 }
 
 export interface CreateRegisterData {
