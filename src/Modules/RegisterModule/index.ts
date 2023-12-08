@@ -15,7 +15,6 @@ import {
   DocumentAvailableData,
   RegisterAllData,
   RegisterDocumentAttachType,
-  RegisterDocumentType,
   VerifyMobileCodeData,
 } from './RegisterModule.type';
 
