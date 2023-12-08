@@ -14,6 +14,7 @@ import {
   CreateRegisterData,
   DocumentAvailableData,
   RegisterAllData,
+  RegisterDocumentAttachType,
   RegisterDocumentType,
   VerifyMobileCodeData,
 } from './RegisterModule.type';
@@ -121,7 +122,7 @@ export class RegisterModule {
    * @returns {Promise<AttachPictureResponse>} - The response after attaching the picture.
    */
   async attachPicture(
-    type: RegisterDocumentType,
+    type: RegisterDocumentAttachType,
     file: File,
     signal?: GenericAbortSignal,
   ): Promise<AttachPictureResponse> {

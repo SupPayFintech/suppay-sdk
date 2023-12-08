@@ -17,6 +17,12 @@ export enum RegisterDocumentType {
   OTHER = 'other',
 }
 
+export enum RegisterDocumentAttachType {
+  DOCUMENT_FRONT = 'document_front',
+  DOCUMENT_BACK = 'document_back',
+  SELFIE = 'selfie',
+}
+
 export interface CreateRegisterData {
   document: string;
   phone: string;

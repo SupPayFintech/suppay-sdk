@@ -8,6 +8,7 @@ import { attachPictureData } from './fixtures/response-attach-picture';
 import { ApiResponseEmpty } from '../fixtures/response-api-empty';
 import {
   ApproveRegisterData,
+  RegisterDocumentAttachType,
   RegisterDocumentType,
 } from './RegisterModule.type';
 import { OrderBy } from '../../SupPayClient.type';
@@ -86,7 +87,7 @@ describe('RegisterModule', () => {
 
     httpMock.post.mockResolvedValue(mockResponse);
 
-    const type = RegisterDocumentType.CNH;
+    const type = RegisterDocumentAttachType.DOCUMENT_BACK;
     const file = new Blob(['dummy content'], { type: 'text/plain' });
     Object.defineProperty(file, 'name', {
       value: 'test.txt',
