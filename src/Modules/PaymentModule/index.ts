@@ -19,6 +19,7 @@ import { PaymentProofType } from './PaymentTypes.type';
 
 export type PaymentCreateResponse = ApiResponse<PaymentData>;
 export type PaymentAllResponse = ApiResponsePaginate<PaymentData>;
+export type PaymentGetResponse = ApiResponse<PaymentData>;
 export type PaymentParticipantResponse = ApiResponse<PaymentParticipantData>;
 export type PaymentRenotifyAuthorizationResponse = ApiResponse;
 export type PaymentAuthorizeWithCodeResponse = ApiResponse;
@@ -27,6 +28,11 @@ export type PaymentCancelResponse = ApiResponse;
 export type PaymentSimulateResponse = ApiResponse<PaymentSimulateData>;
 export type PaymentAuthorizeByCodeResponse = ApiResponse<PaymentData>;
 export type PaymentAttachProofResponse = ApiResponse<PaymentData>;
+
+export type PaymentAllFilter = {
+  query?: string;
+  status?: string[];
+};
 
 /**
  * PaymentModule
@@ -73,7 +79,7 @@ export class PaymentModule {
    * Retrieves a paginated list of all payments.
    *
    * @async
-   * @param {string} [search] - Optional search query.
+   * @param filter
    * @param {number} [page=1] - Page number for pagination.
    * @param {OrderBy} [orderBy=OrderBy.DESC] - Order by ascending or descending.
    * @param {PerPage} [perPage=15] - Number of items per page.
@@ -82,17 +88,42 @@ export class PaymentModule {
    * @returns {Promise<PaymentAllResponse>} A promise that resolves to the paginated payment response.
    */
   async all(
-    search?: string,
+    filter?: PaymentAllFilter,
     page: number = 1,
     orderBy: OrderBy = OrderBy.DESC,
     perPage: PerPage = 15,
     signal?: GenericAbortSignal,
   ): Promise<PaymentAllResponse> {
-    const query = createQueryString({ search, page, orderBy, perPage });
+    const query = createQueryString({
+      ...(filter || {}),
+      page,
+      orderBy,
+      perPage,
+    });
 
     const response = await this.http
       .auth(true)
       .get<PaymentAllResponse>(`/api/v3/payment/all?${query}`, { signal });
+
+    return response.data;
+  }
+
+  /**
+   * Retrieves a single payment by ID.
+   *
+   * @async
+   * @param {string} id - The payment ID.
+   * @param {GenericAbortSignal} [signal] - Optional Axios CancelToken for request cancellation and control.
+   *
+   * @returns {Promise<PaymentGetResponse>} A promise that resolves to the payment data.
+   */
+  async get(
+    id: string,
+    signal?: GenericAbortSignal,
+  ): Promise<PaymentGetResponse> {
+    const response = await this.http
+      .auth(true)
+      .get<PaymentGetResponse>(`/api/v3/payment/${id}`, { signal });
 
     return response.data;
   }

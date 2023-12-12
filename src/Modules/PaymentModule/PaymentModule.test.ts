@@ -1,4 +1,4 @@
-import { PaymentModule } from './index';
+import { PaymentAllFilter, PaymentModule } from './index';
 import Http from '../../Http';
 import { createMockAxiosResponse } from '../../jest-helper';
 
@@ -15,6 +15,7 @@ import { paymentAllData } from './fixtures/response-payment-all';
 import { paymentParticipantData } from './fixtures/response-payment-participant';
 import { ApiResponseEmpty } from '../fixtures/response-api-empty';
 import { paymentSimulateData } from './fixtures/response-payment-simulate';
+import { PaymentGetResponseMock } from './fixtures/response-payment-get';
 
 jest.mock('../../Http');
 
@@ -60,7 +61,10 @@ describe('PaymentModule', () => {
   });
 
   it('should call the payment listing API', async () => {
-    const search = 'example';
+    const filter: PaymentAllFilter = {
+      query: 'foo bar',
+      status: ['example-1', 'example-2'],
+    };
     const page = 1;
     const orderBy = OrderBy.DESC;
     const perPage = 15;
@@ -71,15 +75,13 @@ describe('PaymentModule', () => {
 
     httpMock.get.mockResolvedValue(mockResponse);
 
-    const result = await paymentModule.all(search, page, orderBy, perPage);
+    const result = await paymentModule.all(filter, page, orderBy, perPage);
 
     expect(httpMock.auth).toHaveBeenCalledWith(true);
 
     expect(httpMock.get).toHaveBeenCalledWith(
-      `/api/v3/payment/all?search=${search}&page=${page}&orderBy=${orderBy}&perPage=${perPage}`,
-      {
-        signal: undefined,
-      },
+      '/api/v3/payment/all?query=foo+bar&status%5B%5D=example-1&status%5B%5D=example-2&page=1&orderBy=desc&perPage=15',
+      { signal: undefined },
     );
 
     expect(result).toEqual(paymentAllData);
@@ -110,6 +112,29 @@ describe('PaymentModule', () => {
     );
 
     expect(result).toEqual(paymentParticipantData);
+  });
+
+  it('Should call the renotify payment confirmation API', async () => {
+    const id = 'foo-bar';
+
+    const mockResponse = createMockAxiosResponse(ApiResponseEmpty);
+
+    httpMock.auth.mockImplementation(() => httpMock);
+
+    httpMock.get.mockResolvedValue(mockResponse);
+
+    const result = await paymentModule.renotifyAuthorization(id);
+
+    expect(httpMock.auth).toHaveBeenCalledWith(true);
+
+    expect(httpMock.get).toHaveBeenCalledWith(
+      `/api/v3/payment/${id}/authorization/notify`,
+      {
+        signal: undefined,
+      },
+    );
+
+    expect(result).toEqual(ApiResponseEmpty);
   });
 
   it('Should call the renotify payment confirmation API', async () => {
@@ -341,7 +366,6 @@ describe('PaymentModule', () => {
       amount,
     );
 
-    // Prepare os dados para a comparação
     const formData = new FormData();
     formData.append('type', type);
     formData.append('file', fileValue);
@@ -356,5 +380,23 @@ describe('PaymentModule', () => {
     );
 
     expect(result).toEqual(paymentCreateData);
+  });
+
+  it('Should retrieve a single payment by ID', async () => {
+    const id = 'sample-payment-id'; // Example payment ID
+
+    const mockResponse = createMockAxiosResponse(PaymentGetResponseMock);
+
+    httpMock.auth.mockImplementation(() => httpMock);
+    httpMock.get.mockResolvedValue(mockResponse);
+
+    const result = await paymentModule.get(id);
+
+    expect(httpMock.auth).toHaveBeenCalledWith(true);
+    expect(httpMock.get).toHaveBeenCalledWith(`/api/v3/payment/${id}`, {
+      signal: undefined,
+    });
+
+    expect(result).toEqual(PaymentGetResponseMock);
   });
 });
